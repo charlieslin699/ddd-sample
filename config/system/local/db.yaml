@@ -1,0 +1,6 @@
+# DB auth
+auth:
+  dbName: auth
+  addrEnv: DB_ACCOUNT_ADDR
+  usernameEnv: DB_ACCOUNT_USER
+  passwordEnv: DB_ACCOUNT_PASS

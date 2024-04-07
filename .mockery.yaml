@@ -1,0 +1,47 @@
+with-expecter: true
+mockname: "{{.InterfaceName}}"
+filename: "{{.InterfaceName}}.go"
+packages:
+  # pkg
+  ddd-sample/pkg/config/i18n:
+    config:
+      all: false
+      dir: mocks/pkg/config/i18n
+    interfaces:
+      I18N:
+  ddd-sample/pkg/env:
+    config:
+      all: false
+      dir: mocks/pkg/env
+    interfaces:
+      Env:
+  ddd-sample/pkg/localtime:
+    config:
+      all: false
+      dir: mocks/pkg/localtime
+    interfaces:
+      LocalTime:
+  ddd-sample/pkg/random:
+    config:
+      all: false
+      dir: mocks/pkg/random
+    interfaces:
+      Random:
+  # core
+  ddd-sample/internal/core/aggregate:
+    config:
+      all: true
+      dir: mocks/mockinternal/core/aggregate
+  ddd-sample/internal/core/event:
+    config:
+      all: true
+      dir: mocks/mockinternal/core/event
+  ddd-sample/internal/core/repository:
+    config:
+      all: true
+      dir: mocks/mockinternal/core/repository
+  # internal
+  ddd-sample/internal/auth/repository:
+    config:
+      all: true
+      dir: mocks/mockinternal/auth/repository
