@@ -11,7 +11,7 @@ func NewNanoID(fns ...NanoIDOptionFunc) string {
 		fn(&option)
 	}
 
-	id, _ := gonanoid.New(option.Length)
+	id := gonanoid.Must(option.Length)
 	return id
 }
 
