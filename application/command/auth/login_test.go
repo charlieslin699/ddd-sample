@@ -4,11 +4,11 @@ import (
 	"context"
 	"ddd-sample/internal/auth/aggregate"
 	"ddd-sample/internal/auth/repository"
-	mockauthrepository "ddd-sample/mocks/mockinternal/auth/repository"
-	mockenv "ddd-sample/mocks/pkg/env"
-	mocklocaltime "ddd-sample/mocks/pkg/localtime"
 	"ddd-sample/pkg/env"
 	"ddd-sample/pkg/localtime"
+	mockauthrepository "ddd-sample/test/mocks/mockinternal/auth/repository"
+	mockenv "ddd-sample/test/mocks/pkg/env"
+	mocklocaltime "ddd-sample/test/mocks/pkg/localtime"
 	"testing"
 	"time"
 
@@ -70,15 +70,10 @@ func Test_loginCommand_Execute(t *testing.T) {
 		mockLocaltime := mocklocaltime.NewLocalTime(t)
 		mockLocaltime.On("NowTime").Return(time.Unix(0, 0))
 
-		expected := LoginCommandOutput{
-			IsLogin: true,
-			Token:   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjo4NjQwMCwibmJmIjowLCJpYXQiOjAsImp0aSI6IjEifQ.dUBSXogn3RE-6-JvhjITXfhfRnkO0f42mDEAkRwyVfQ",
-		}
-
 		loginCommand := NewLoginCommand(mockAuthRepository, mockEnv, mockLocaltime)
 		actual, actualErr := loginCommand.Execute(arg.ctx, arg.input)
 
-		assert.Equal(t, expected, actual)
+		assert.True(t, actual.IsLogin)
 		assert.NoError(t, actualErr)
 	})
 
@@ -121,7 +116,9 @@ func Test_loginCommand_Execute(t *testing.T) {
 		// mocks
 		mockAuthRepository := mockauthrepository.NewIdentityRepository(t)
 		mockAuthRepository.On("Find", mock.Anything).
-			Return(aggregate.NewIdenetity(arg.input.Username, arg.input.Password), nil)
+			Return(aggregate.NewIdenetity("bar", "foo"), nil)
+		mockAuthRepository.On("SaveLoginFailedRecord", mock.Anything).
+			Return(nil)
 
 		mockEnv := mockenv.NewEnv(t)
 

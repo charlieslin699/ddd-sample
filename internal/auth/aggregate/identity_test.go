@@ -3,7 +3,8 @@ package aggregate
 import (
 	"ddd-sample/internal/auth/entity"
 	"ddd-sample/internal/auth/enum"
-	mockaggregate "ddd-sample/mocks/mockinternal/core/aggregate"
+	"ddd-sample/internal/auth/valueobject"
+	mockaggregate "ddd-sample/test/mocks/mockinternal/core/aggregate"
 	"testing"
 	"time"
 
@@ -73,7 +74,10 @@ func TestIdentity_CreateToken(t *testing.T) {
 		mocksCoreAggregate.On("AddEvent", mock.Anything)
 
 		// 期望值
-		expected := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjo4NjQwMCwibmJmIjowLCJpYXQiOjAsImp0aSI6IjEifQ.dUBSXogn3RE-6-JvhjITXfhfRnkO0f42mDEAkRwyVfQ"
+		expected := valueobject.Token{
+			TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjo4NjQwMCwibmJmIjowLCJpYXQiOjAsImp0aSI6IjEifQ.dUBSXogn3RE-6-JvhjITXfhfRnkO0f42mDEAkRwyVfQ",
+			CreateTime:  time.Unix(0, 0),
+		}
 
 		identity := Identity{
 			account:       entity.BuildAccount("1", "test", "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", "123", enum.AccountStatusNormal),

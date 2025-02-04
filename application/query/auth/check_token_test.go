@@ -2,10 +2,10 @@ package auth
 
 import (
 	"context"
-	mockenv "ddd-sample/mocks/pkg/env"
-	mocklocaltime "ddd-sample/mocks/pkg/localtime"
 	"ddd-sample/pkg/env"
 	"ddd-sample/pkg/localtime"
+	mockenv "ddd-sample/test/mocks/pkg/env"
+	mocklocaltime "ddd-sample/test/mocks/pkg/localtime"
 	"testing"
 	"time"
 
