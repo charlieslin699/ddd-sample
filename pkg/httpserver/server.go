@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type HttpServer interface {
+type HTTPServer interface {
 	Route(fn ...RouteFunc)
 	Catch(fn ...CatchFunc)
 	Engine() http.Handler
@@ -19,7 +19,7 @@ type httpServer struct {
 }
 
 // 工廠
-func NewHttpServer() HttpServer {
+func NewHTTPServer() HTTPServer {
 	return &httpServer{
 		engine:        gin.New(),
 		errorHandlers: make([]ErrorHandlerFunc, 0),

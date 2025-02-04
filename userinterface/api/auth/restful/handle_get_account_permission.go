@@ -12,14 +12,14 @@ import (
 func HandleGetAccountPermission(getAccountPermissionQuery auth.GetAccountPermissionQuery) httpserver.HandlerFunc {
 	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
 		// 參數驗證
-		requestUri, err := validation.ValidateUri[model.GetAccountPermissionRequestUri](ctx)
+		requestURI, err := validation.ValidateURI[model.GetAccountPermissionRequestURI](ctx)
 		if err != nil {
 			return nil, err
 		}
 
 		// 取得帳號權限
 		output, err := getAccountPermissionQuery.Execute(ctx, auth.GetAccountPermissionQueryInput{
-			AccountUID: requestUri.UID,
+			AccountUID: requestURI.UID,
 		})
 
 		responseData := model.GetAccountPermissionResponse{

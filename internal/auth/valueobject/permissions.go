@@ -12,7 +12,6 @@ func BuildPermissions(allPermissions []entity.Permission, accountPermissionUIDs 
 
 	for _, permission := range allPermissions {
 		p.AllPermissions[permission.UID()] = permission
-
 	}
 
 	p.Update(accountPermissionUIDs)

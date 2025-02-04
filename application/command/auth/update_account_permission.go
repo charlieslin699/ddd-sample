@@ -22,14 +22,18 @@ type UpdateAccountPermissionCommandInput struct {
 type UpdateAccountPermissionCommandOutput struct {
 }
 
-func NewUpdateAccountPermissionCommand(accountPermissionRepository repository.AccountPermissionRepository, localTime localtime.LocalTime) UpdateAccountPermissionCommand {
+func NewUpdateAccountPermissionCommand(
+	accountPermissionRepository repository.AccountPermissionRepository, localTime localtime.LocalTime,
+) UpdateAccountPermissionCommand {
 	return &updateAccountPermissionCommand{
 		accountPermissionRepository: accountPermissionRepository,
 		localTime:                   localTime,
 	}
 }
 
-func (c *updateAccountPermissionCommand) Execute(ctx context.Context, input UpdateAccountPermissionCommandInput) (output UpdateAccountPermissionCommandOutput, err error) {
+func (c *updateAccountPermissionCommand) Execute(
+	_ context.Context, input UpdateAccountPermissionCommandInput,
+) (output UpdateAccountPermissionCommandOutput, err error) {
 	// 取aggregate
 	accountPermission, err := c.accountPermissionRepository.Find(input.AccountUID)
 	if err != nil {

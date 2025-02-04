@@ -23,7 +23,7 @@ func Context[T any](fns ...ContextKeyOptionfunc) ContextKey[T] {
 		fn(&key)
 	}
 
-	var ck ContextKey[T] = ContextKey[T](key)
+	ck := ContextKey[T](key)
 
 	return ck
 }

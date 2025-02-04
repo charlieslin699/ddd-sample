@@ -8,7 +8,7 @@ import (
 	ginswagger "github.com/swaggo/gin-swagger"
 )
 
-func InitRouter(server httpserver.HttpServer) {
+func InitRouter(server httpserver.HTTPServer) {
 	server.Route(
 		httpserver.GET("/swagger/*any", func(ctx *gin.Context) (httpserver.RestfulResult, error) {
 			ginswagger.WrapHandler(

@@ -22,12 +22,12 @@ func NewEnv() Env {
 	}
 }
 
-// 使用EnvKey取字典檔
-func (e *env) GetValue(ek EnvKey) string {
+// GetValue 使用EnvKey取字典檔
+func (_ env) GetValue(ek EnvKey) string { //nolint:stylecheck // 保持取資料流程一致
 	return ek.value()
 }
 
-// 使用輸入的key取字典檔, 少用、維護性差
+// GetValueByKey 使用輸入的key取字典檔, 少用、維護性差
 func (e *env) GetValueByKey(key string) (value string, isExist bool) {
 	e.mutex.RLock()
 	value, isExist = e.cache[key]

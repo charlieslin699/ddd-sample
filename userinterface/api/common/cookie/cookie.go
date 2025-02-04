@@ -93,7 +93,7 @@ func WithSecure(secure bool) CookieOptionFunc {
 	}
 }
 
-func WithHttpOnly(httpOnly bool) CookieOptionFunc {
+func WithHTTPOnly(httpOnly bool) CookieOptionFunc {
 	return func(c *Cookie) {
 		c.httpOnly = httpOnly
 	}

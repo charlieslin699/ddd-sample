@@ -15,7 +15,7 @@ type random struct {
 
 func NewRandom(fns ...RandomOptionFunc) Random {
 	option := newOption(fns...)
-	r := rand.New(rand.NewSource(option.seed))
+	r := rand.New(rand.NewSource(option.seed)) //nolint:gosec // TODO: 併發不安全，待調整
 
 	return &random{r, option}
 }

@@ -1,10 +1,10 @@
 package mysql
 
 import (
-	"errors"
 	"ddd-sample/infra/db"
 	"ddd-sample/infra/db/auth/model"
 	"ddd-sample/pkg/errorcode"
+	"errors"
 
 	"gorm.io/gorm"
 )

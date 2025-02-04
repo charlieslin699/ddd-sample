@@ -13,7 +13,7 @@ type errorCode struct {
 	langIndex    string
 }
 
-func NewErrorCode(code string, debugMessage string, langIndex string) ErrorCode {
+func NewErrorCode(code, debugMessage, langIndex string) ErrorCode {
 	return errorCode{code, debugMessage, langIndex}
 }
 

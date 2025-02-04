@@ -37,6 +37,7 @@ func HandleError(getLangQuery lang.GetLangQuery) httpserver.ErrorHandlerFunc {
 }
 
 func handleErrorCode(errcode errorcode.ErrorCode) {
+	//nolint:gocritic // 錯誤代碼處理
 	switch errcode {
 	// 取不到context資料，可能是middleware沒有設定
 	case errorcode.ErrContextGetFailed:

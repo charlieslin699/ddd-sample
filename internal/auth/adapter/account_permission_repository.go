@@ -100,7 +100,9 @@ func (repo *accountPermissionRepository) parseToPermissionValueObject(
 }
 
 // 轉換成db model
-func (repo *accountPermissionRepository) parseToAccountPermissionModel(accountUID string, permissions valueobject.Permissions) []infradbauthmodel.AccountPermission {
+func (repo *accountPermissionRepository) parseToAccountPermissionModel(
+	accountUID string, permissions valueobject.Permissions,
+) []infradbauthmodel.AccountPermission {
 	var accountPermissions []infradbauthmodel.AccountPermission
 	for _, permissionUID := range permissions.AccountPermissionUIDs {
 		accountPermissions = append(accountPermissions, infradbauthmodel.AccountPermission{

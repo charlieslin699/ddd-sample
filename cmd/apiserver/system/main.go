@@ -16,7 +16,7 @@ func main() {
 		panic(err)
 	}
 
-	// 優雅重啟
+	//nolint:gocritic // 優雅重啟
 	// if err := gracehttp.Serve(server); err != nil {
 	// 	panic(err)
 	// }
@@ -24,7 +24,7 @@ func main() {
 
 func newServer() *http.Server {
 	config := getConfig()
-	server := httpserver.NewHttpServer()
+	server := httpserver.NewHTTPServer()
 
 	auth.InitRouter(server)
 

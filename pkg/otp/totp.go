@@ -5,9 +5,9 @@ import (
 )
 
 // GenerateURL 產生OTP URL
-func GenerateURL(Issuer, accountName, secret string) (string, error) {
+func GenerateURL(issuer, accountName, secret string) (string, error) {
 	key, err := totp.Generate(totp.GenerateOpts{
-		Issuer:      Issuer,
+		Issuer:      issuer,
 		AccountName: accountName,
 		Secret:      []byte(secret),
 	})
@@ -16,7 +16,6 @@ func GenerateURL(Issuer, accountName, secret string) (string, error) {
 	}
 
 	return key.URL(), nil
-
 }
 
 // Verify 驗證OTP

@@ -1,4 +1,4 @@
-package restful
+package restful //nolint:dupl // 不同用途
 
 import (
 	"ddd-sample/application/command/auth"
@@ -12,7 +12,7 @@ import (
 func HandleChangePassword(changePasswordCommand auth.ChangePasswordCommand) httpserver.HandlerFunc {
 	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
 		// 參數驗證
-		requestUri, err := validation.ValidateUri[model.PutAccountPasswordRequestUri](ctx)
+		requestURI, err := validation.ValidateURI[model.PutAccountPasswordRequestURI](ctx)
 		if err != nil {
 			return nil, err
 		}
@@ -23,7 +23,7 @@ func HandleChangePassword(changePasswordCommand auth.ChangePasswordCommand) http
 
 		// 更新密碼
 		_, err = changePasswordCommand.Execute(ctx, auth.ChangePasswordCommandInput{
-			UID:         requestUri.UID,
+			UID:         requestURI.UID,
 			OldPassword: requestData.OldPassword,
 			NewPassword: requestData.NewPassword,
 		})

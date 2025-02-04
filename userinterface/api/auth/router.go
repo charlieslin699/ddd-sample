@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	commandauth "ddd-sample/application/command/auth"
 	queryauth "ddd-sample/application/query/auth"
 	querylang "ddd-sample/application/query/lang"
@@ -18,9 +17,10 @@ import (
 	"ddd-sample/userinterface/api/common/errorhandler"
 	commonmiddleware "ddd-sample/userinterface/api/common/middleware"
 	"ddd-sample/userinterface/api/common/panichandler"
+	"fmt"
 )
 
-func InitRouter(server httpserver.HttpServer) {
+func InitRouter(server httpserver.HTTPServer) {
 	// pkg
 	localTime := pkglocaltime.NewLocalTime()
 	env := pkgenv.NewEnv()

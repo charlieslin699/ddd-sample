@@ -37,7 +37,7 @@ func NewLoginCommand(identityRepository repository.IdentityRepository, env env.E
 }
 
 // 登入
-func (c *loginCommand) Execute(ctx context.Context, input LoginCommandInput) (output LoginCommandOutput, err error) {
+func (c *loginCommand) Execute(_ context.Context, input LoginCommandInput) (output LoginCommandOutput, err error) {
 	// 取身分資料
 	identity, err := c.identityRepository.Find(input.Username)
 	if err != nil {

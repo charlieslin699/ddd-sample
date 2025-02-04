@@ -32,7 +32,7 @@ func NewCheckTokenQuery(env env.Env, localTime localtime.LocalTime) CheckTokenQu
 	}
 }
 
-func (q *checkTokenQuery) Execute(ctx context.Context, input CheckTokenQueryInput) (CheckTokenQueryOutput, error) {
+func (q *checkTokenQuery) Execute(_ context.Context, input CheckTokenQueryInput) (CheckTokenQueryOutput, error) {
 	// 取金鑰
 	jwtKey := q.env.GetValue(env.AuthTokenKey)
 

@@ -30,7 +30,7 @@ func NewCreateAccountCommand(accountRepository repository.AccountRepository, loc
 	}
 }
 
-func (c *createAccountCommand) Execute(ctx context.Context, input CreateAccountCommandInput) (output CreateAccountCommandOutput, err error) {
+func (c *createAccountCommand) Execute(_ context.Context, input CreateAccountCommandInput) (output CreateAccountCommandOutput, err error) {
 	// 建立帳號
 	account := c.accountRepository.New(input.Username, input.Password, c.localTime.NowTime())
 

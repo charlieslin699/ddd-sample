@@ -25,7 +25,7 @@ func NewGetLangsQuery(i18n i18n.I18N) GetLangsQuery {
 	return &getLangsQuery{i18n}
 }
 
-func (q *getLangsQuery) Execute(ctx context.Context, input GetLangsQueryInput) (GetLangsQueryOutput, error) {
+func (q *getLangsQuery) Execute(_ context.Context, input GetLangsQueryInput) (GetLangsQueryOutput, error) {
 	output := GetLangsQueryOutput{
 		LangMap: make(map[string]string),
 	}

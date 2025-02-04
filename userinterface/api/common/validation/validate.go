@@ -7,7 +7,7 @@ func Validate[T any](ctx *gin.Context) (result T, err error) {
 	return
 }
 
-func ValidateUri[T any](ctx *gin.Context) (result T, err error) {
+func ValidateURI[T any](ctx *gin.Context) (result T, err error) {
 	err = ctx.ShouldBindUri(&result)
 	return
 }

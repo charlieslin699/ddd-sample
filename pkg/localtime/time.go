@@ -16,7 +16,7 @@ type localTime struct {
 
 // NewLocalTime 建立 LocalTime(預設美東時區)
 func NewLocalTime(fns ...localTimeOption) LocalTime {
-	location := time.FixedZone("UTC-4", -4*60*60) // 美東時間
+	location := time.FixedZone("UTC-4", -4*60*60) //nolint:mnd // 美東時間
 	l := &localTime{
 		location: location,
 	}

@@ -52,7 +52,7 @@ func (i *Identity) CheckIdentity(username, password string) bool {
 
 // CreateToken 產生token, 等於登入
 func (i *Identity) CreateToken(secretKey []byte, nowTime time.Time) valueobject.Token {
-	expirationTime := nowTime.Add(24 * time.Hour) // 24小時到期
+	expirationTime := nowTime.Add(24 * time.Hour) //nolint:mnd // 24小時到期
 	// 產生token
 	tokenString := token.NewAuthToken(i.account.UID(), i.account.Username(), secretKey, expirationTime, nowTime)
 

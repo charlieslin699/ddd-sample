@@ -27,7 +27,9 @@ func NewGetAccountPermissionQuery(dbAuth infradbauth.DBAuth) GetAccountPermissio
 	}
 }
 
-func (q *getAccountPermissionQuery) Execute(ctx context.Context, input GetAccountPermissionQueryInput) (output GetAccountPermissionQueryOutput, err error) {
+func (q *getAccountPermissionQuery) Execute(
+	_ context.Context, input GetAccountPermissionQueryInput,
+) (output GetAccountPermissionQueryOutput, err error) {
 	// 取得帳號權限
 	accountPermissionData, err := q.dbAuth.GetAccountPermission(input.AccountUID)
 	if err != nil {

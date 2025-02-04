@@ -31,7 +31,9 @@ func NewChangePasswordCommand(accountRepository repository.AccountRepository, lo
 	}
 }
 
-func (c *changePasswordCommand) Execute(ctx context.Context, input ChangePasswordCommandInput) (output ChangePasswordCommandOutput, err error) {
+func (c *changePasswordCommand) Execute(
+	_ context.Context, input ChangePasswordCommandInput,
+) (output ChangePasswordCommandOutput, err error) {
 	// 取得帳號
 	account, err := c.accountRepository.Find(input.UID)
 	if err != nil {

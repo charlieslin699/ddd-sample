@@ -23,7 +23,7 @@ func main() {
 
 func newServer() *http.Server {
 	config := getConfig()
-	server := httpserver.NewHttpServer()
+	server := httpserver.NewHTTPServer()
 
 	swagger.InitRouter(server)
 

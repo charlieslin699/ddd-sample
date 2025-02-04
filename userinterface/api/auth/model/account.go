@@ -9,7 +9,7 @@ type PostAccountResponse struct {
 	UID string `json:"uid"` // 使用者UID
 }
 
-type PutAccountRequestUri struct {
+type PutAccountRequestURI struct {
 	UID string `uri:"uid" binding:"required"` // 使用者UID
 }
 
@@ -21,7 +21,7 @@ type PutAccountRequest struct {
 type PutAccountResponse struct {
 }
 
-type PutAccountPasswordRequestUri struct {
+type PutAccountPasswordRequestURI struct {
 	UID string `uri:"uid" binding:"required"` // 使用者UID
 }
 
@@ -33,7 +33,7 @@ type PutAccountPasswordRequest struct {
 type PutAccountPasswordResponse struct {
 }
 
-type GetAccountPermissionRequestUri struct {
+type GetAccountPermissionRequestURI struct {
 	UID string `uri:"uid" binding:"required"` // 使用者UID
 }
 

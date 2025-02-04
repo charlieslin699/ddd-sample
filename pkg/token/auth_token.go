@@ -38,9 +38,9 @@ func (c *AuthTokenClaims) Username() string {
 
 // 解析Auth Token
 func ParseAuthToken(tokenString string, secretKey []byte) (*AuthTokenClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &AuthTokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &AuthTokenClaims{}, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
 		return secretKey, nil
@@ -53,7 +53,7 @@ func ParseAuthToken(tokenString string, secretKey []byte) (*AuthTokenClaims, err
 }
 
 // 產生Auth Token
-func NewAuthToken(uid, username string, secretKey []byte, expirationTime time.Time, nowTime time.Time) (tokenString string) {
+func NewAuthToken(uid, username string, secretKey []byte, expirationTime, nowTime time.Time) (tokenString string) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, AuthTokenClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),

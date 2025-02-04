@@ -1,4 +1,4 @@
-package restful
+package restful //nolint:dupl // 不同用途
 
 import (
 	"ddd-sample/application/command/auth"
@@ -12,7 +12,7 @@ import (
 func HandleUpdateAccount(updateAccountCommand auth.UpdateAccountCommand) httpserver.HandlerFunc {
 	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
 		// 參數驗證
-		requestUri, err := validation.ValidateUri[model.PutAccountRequestUri](ctx)
+		requestURI, err := validation.ValidateURI[model.PutAccountRequestURI](ctx)
 		if err != nil {
 			return nil, err
 		}
@@ -23,7 +23,7 @@ func HandleUpdateAccount(updateAccountCommand auth.UpdateAccountCommand) httpser
 
 		// 更新帳號
 		_, err = updateAccountCommand.Execute(ctx, auth.UpdateAccountCommandInput{
-			UID:          requestUri.UID,
+			UID:          requestURI.UID,
 			Status:       requestData.Status,
 			IsEnabledOTP: requestData.IsEnabledOTP,
 		})

@@ -21,7 +21,7 @@ func NewGetLangQuery(i18n i18n.I18N) GetLangQuery {
 	return &getLangQuery{i18n}
 }
 
-func (q *getLangQuery) Execute(ctx context.Context, input GetLangQueryInput) (string, error) {
+func (q *getLangQuery) Execute(_ context.Context, input GetLangQueryInput) (string, error) {
 	value := q.i18n.Get(input.Key, input.Locale)
 	return value, nil
 }

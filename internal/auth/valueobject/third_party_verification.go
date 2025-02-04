@@ -18,7 +18,6 @@ func Build(enumValues ...enum.ThirdPartyVerification) ThirdPartyVerification {
 	}
 
 	return result
-
 }
 
 func BuildByValue(values ...uint) ThirdPartyVerification {
@@ -32,8 +31,7 @@ func BuildByValue(values ...uint) ThirdPartyVerification {
 }
 
 func (t *ThirdPartyVerification) Enable(e enum.ThirdPartyVerification) {
-	switch e {
-	case enum.ThirdPartyVerificationOTP:
+	if e == enum.ThirdPartyVerificationOTP {
 		t.OTP = true
 	}
 }

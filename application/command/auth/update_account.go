@@ -33,7 +33,7 @@ func NewUpdateAccountCommand(accountRepository repository.AccountRepository, loc
 	}
 }
 
-func (c *updateAccountCommand) Execute(ctx context.Context, input UpdateAccountCommandInput) (output UpdateAccountCommandOutput, err error) {
+func (c *updateAccountCommand) Execute(_ context.Context, input UpdateAccountCommandInput) (output UpdateAccountCommandOutput, err error) {
 	// 取得帳號
 	account, err := c.accountRepository.Find(input.UID)
 	if err != nil {

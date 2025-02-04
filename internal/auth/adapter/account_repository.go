@@ -110,7 +110,9 @@ func (r *accountRepository) ChangePassword(account *aggregate.Account) error {
 }
 
 // 將第三方驗證資料轉換成value object
-func (r *accountRepository) parseToThirdPartyVerification(verifications []infradbauthmodel.ThirdPartyVerification) valueobject.ThirdPartyVerification {
+func (r *accountRepository) parseToThirdPartyVerification(
+	verifications []infradbauthmodel.ThirdPartyVerification,
+) valueobject.ThirdPartyVerification {
 	thirdPartyVerification := valueobject.NewThirdPartyVerification()
 
 	for _, verification := range verifications {
