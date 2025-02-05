@@ -11,9 +11,9 @@ import (
 func HandleCanUpdateAccount() httpserver.HandlerFunc {
 	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
 		// 登入帳號資料
-		userUID, isExist := context.UserUID.Get(ctx)
-		if !isExist {
-			return nil, errorcode.ErrContextGetFailed
+		userUID, err := context.UserUID.Get(ctx)
+		if err != nil {
+			return nil, err
 		}
 
 		// 取得要更新的帳號UID

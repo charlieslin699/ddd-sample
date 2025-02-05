@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"context"
 	"ddd-sample/infra/db"
 	"ddd-sample/infra/db/auth/model"
 )
@@ -15,9 +16,9 @@ func NewMySQLPermission(conn db.DBConn) *MySQLPermission {
 	}
 }
 
-func (m *MySQLPermission) GetAllPermission() ([]model.Permission, error) {
+func (m *MySQLPermission) GetAllPermission(ctx context.Context) ([]model.Permission, error) {
 	permissions := []model.Permission{}
-	result := m.conn.DB().Find(&permissions)
+	result := m.conn.DB(ctx).Find(&permissions)
 	if result.Error != nil {
 		return nil, result.Error
 	}

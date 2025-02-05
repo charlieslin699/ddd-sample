@@ -1,6 +1,7 @@
 package db
 
 import (
+	"context"
 	"time"
 
 	gosqldrivermysql "github.com/go-sql-driver/mysql"
@@ -40,8 +41,8 @@ func NewMySQLConn(fns ...MySQLConnOptionFunc) (DBConn, error) {
 	return conn, err
 }
 
-func (conn *mysqlConn) DB() *gorm.DB {
-	return conn.db
+func (conn *mysqlConn) DB(ctx context.Context) *gorm.DB {
+	return conn.db.WithContext(ctx)
 }
 
 type MySQLConnOptionFunc func(conn *mysqlConn)

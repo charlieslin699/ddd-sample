@@ -37,34 +37,31 @@ func NewLoginCommand(identityRepository repository.IdentityRepository, env env.E
 }
 
 // 登入
-func (c *loginCommand) Execute(_ context.Context, input LoginCommandInput) (output LoginCommandOutput, err error) {
+func (c *loginCommand) Execute(ctx context.Context, input LoginCommandInput) (LoginCommandOutput, error) {
 	// 取身分資料
-	identity, err := c.identityRepository.Find(input.Username)
+	identity, err := c.identityRepository.Find(ctx, input.Username)
 	if err != nil {
-		return
+		return LoginCommandOutput{}, err
 	}
 
 	// 檢查帳號密碼
 	if isOK := identity.CheckIdentity(input.Username, input.Password); !isOK {
 		// 寫入登入失敗紀錄
-		err = c.identityRepository.SaveLoginFailedRecord(identity)
-		return
+		err = c.identityRepository.SaveLoginFailedRecord(ctx, identity)
+		return LoginCommandOutput{}, err
 	}
 
 	// 產生token
 	token := identity.CreateToken([]byte(c.env.GetValue(env.AuthTokenKey)), c.localtime.NowTime())
 
 	// 保存登入紀錄
-	err = c.identityRepository.SaveLoginRecord(identity, token)
+	err = c.identityRepository.SaveLoginRecord(ctx, identity, token)
 	if err != nil {
-		return
+		return LoginCommandOutput{}, err
 	}
 
-	// 組資料
-	output = LoginCommandOutput{
+	return LoginCommandOutput{
 		IsLogin: true,
 		Token:   token.TokenString,
-	}
-
-	return
+	}, nil
 }

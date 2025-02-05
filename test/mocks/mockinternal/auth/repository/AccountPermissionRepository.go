@@ -3,7 +3,9 @@
 package repository
 
 import (
+	context "context"
 	aggregate "ddd-sample/internal/auth/aggregate"
+
 	coreaggregate "ddd-sample/internal/core/aggregate"
 
 	mock "github.com/stretchr/testify/mock"
@@ -22,9 +24,9 @@ func (_m *AccountPermissionRepository) EXPECT() *AccountPermissionRepository_Exp
 	return &AccountPermissionRepository_Expecter{mock: &_m.Mock}
 }
 
-// Find provides a mock function with given fields: accountUID
-func (_m *AccountPermissionRepository) Find(accountUID string) (*aggregate.AccountPermission, error) {
-	ret := _m.Called(accountUID)
+// Find provides a mock function with given fields: ctx, accountUID
+func (_m *AccountPermissionRepository) Find(ctx context.Context, accountUID string) (*aggregate.AccountPermission, error) {
+	ret := _m.Called(ctx, accountUID)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Find")
@@ -32,19 +34,19 @@ func (_m *AccountPermissionRepository) Find(accountUID string) (*aggregate.Accou
 
 	var r0 *aggregate.AccountPermission
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string) (*aggregate.AccountPermission, error)); ok {
-		return rf(accountUID)
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*aggregate.AccountPermission, error)); ok {
+		return rf(ctx, accountUID)
 	}
-	if rf, ok := ret.Get(0).(func(string) *aggregate.AccountPermission); ok {
-		r0 = rf(accountUID)
+	if rf, ok := ret.Get(0).(func(context.Context, string) *aggregate.AccountPermission); ok {
+		r0 = rf(ctx, accountUID)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*aggregate.AccountPermission)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(accountUID)
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, accountUID)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -58,14 +60,15 @@ type AccountPermissionRepository_Find_Call struct {
 }
 
 // Find is a helper method to define mock.On call
+//   - ctx context.Context
 //   - accountUID string
-func (_e *AccountPermissionRepository_Expecter) Find(accountUID interface{}) *AccountPermissionRepository_Find_Call {
-	return &AccountPermissionRepository_Find_Call{Call: _e.mock.On("Find", accountUID)}
+func (_e *AccountPermissionRepository_Expecter) Find(ctx interface{}, accountUID interface{}) *AccountPermissionRepository_Find_Call {
+	return &AccountPermissionRepository_Find_Call{Call: _e.mock.On("Find", ctx, accountUID)}
 }
 
-func (_c *AccountPermissionRepository_Find_Call) Run(run func(accountUID string)) *AccountPermissionRepository_Find_Call {
+func (_c *AccountPermissionRepository_Find_Call) Run(run func(ctx context.Context, accountUID string)) *AccountPermissionRepository_Find_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string))
+		run(args[0].(context.Context), args[1].(string))
 	})
 	return _c
 }
@@ -75,7 +78,7 @@ func (_c *AccountPermissionRepository_Find_Call) Return(_a0 *aggregate.AccountPe
 	return _c
 }
 
-func (_c *AccountPermissionRepository_Find_Call) RunAndReturn(run func(string) (*aggregate.AccountPermission, error)) *AccountPermissionRepository_Find_Call {
+func (_c *AccountPermissionRepository_Find_Call) RunAndReturn(run func(context.Context, string) (*aggregate.AccountPermission, error)) *AccountPermissionRepository_Find_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -126,17 +129,17 @@ func (_c *AccountPermissionRepository_PubEvent_Call) RunAndReturn(run func(corea
 	return _c
 }
 
-// Update provides a mock function with given fields: _a0
-func (_m *AccountPermissionRepository) Update(_a0 *aggregate.AccountPermission) error {
-	ret := _m.Called(_a0)
+// Update provides a mock function with given fields: ctx, ap
+func (_m *AccountPermissionRepository) Update(ctx context.Context, ap *aggregate.AccountPermission) error {
+	ret := _m.Called(ctx, ap)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Update")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*aggregate.AccountPermission) error); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, *aggregate.AccountPermission) error); ok {
+		r0 = rf(ctx, ap)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -150,14 +153,15 @@ type AccountPermissionRepository_Update_Call struct {
 }
 
 // Update is a helper method to define mock.On call
-//   - _a0 *aggregate.AccountPermission
-func (_e *AccountPermissionRepository_Expecter) Update(_a0 interface{}) *AccountPermissionRepository_Update_Call {
-	return &AccountPermissionRepository_Update_Call{Call: _e.mock.On("Update", _a0)}
+//   - ctx context.Context
+//   - ap *aggregate.AccountPermission
+func (_e *AccountPermissionRepository_Expecter) Update(ctx interface{}, ap interface{}) *AccountPermissionRepository_Update_Call {
+	return &AccountPermissionRepository_Update_Call{Call: _e.mock.On("Update", ctx, ap)}
 }
 
-func (_c *AccountPermissionRepository_Update_Call) Run(run func(_a0 *aggregate.AccountPermission)) *AccountPermissionRepository_Update_Call {
+func (_c *AccountPermissionRepository_Update_Call) Run(run func(ctx context.Context, ap *aggregate.AccountPermission)) *AccountPermissionRepository_Update_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*aggregate.AccountPermission))
+		run(args[0].(context.Context), args[1].(*aggregate.AccountPermission))
 	})
 	return _c
 }
@@ -167,7 +171,7 @@ func (_c *AccountPermissionRepository_Update_Call) Return(_a0 error) *AccountPer
 	return _c
 }
 
-func (_c *AccountPermissionRepository_Update_Call) RunAndReturn(run func(*aggregate.AccountPermission) error) *AccountPermissionRepository_Update_Call {
+func (_c *AccountPermissionRepository_Update_Call) RunAndReturn(run func(context.Context, *aggregate.AccountPermission) error) *AccountPermissionRepository_Update_Call {
 	_c.Call.Return(run)
 	return _c
 }

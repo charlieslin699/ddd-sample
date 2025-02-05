@@ -3,7 +3,9 @@
 package repository
 
 import (
+	context "context"
 	aggregate "ddd-sample/internal/auth/aggregate"
+
 	coreaggregate "ddd-sample/internal/core/aggregate"
 
 	mock "github.com/stretchr/testify/mock"
@@ -24,17 +26,17 @@ func (_m *AccountRepository) EXPECT() *AccountRepository_Expecter {
 	return &AccountRepository_Expecter{mock: &_m.Mock}
 }
 
-// Add provides a mock function with given fields: account
-func (_m *AccountRepository) Add(account *aggregate.Account) error {
-	ret := _m.Called(account)
+// Add provides a mock function with given fields: ctx, account
+func (_m *AccountRepository) Add(ctx context.Context, account *aggregate.Account) error {
+	ret := _m.Called(ctx, account)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Add")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*aggregate.Account) error); ok {
-		r0 = rf(account)
+	if rf, ok := ret.Get(0).(func(context.Context, *aggregate.Account) error); ok {
+		r0 = rf(ctx, account)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -48,14 +50,15 @@ type AccountRepository_Add_Call struct {
 }
 
 // Add is a helper method to define mock.On call
+//   - ctx context.Context
 //   - account *aggregate.Account
-func (_e *AccountRepository_Expecter) Add(account interface{}) *AccountRepository_Add_Call {
-	return &AccountRepository_Add_Call{Call: _e.mock.On("Add", account)}
+func (_e *AccountRepository_Expecter) Add(ctx interface{}, account interface{}) *AccountRepository_Add_Call {
+	return &AccountRepository_Add_Call{Call: _e.mock.On("Add", ctx, account)}
 }
 
-func (_c *AccountRepository_Add_Call) Run(run func(account *aggregate.Account)) *AccountRepository_Add_Call {
+func (_c *AccountRepository_Add_Call) Run(run func(ctx context.Context, account *aggregate.Account)) *AccountRepository_Add_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*aggregate.Account))
+		run(args[0].(context.Context), args[1].(*aggregate.Account))
 	})
 	return _c
 }
@@ -65,22 +68,22 @@ func (_c *AccountRepository_Add_Call) Return(_a0 error) *AccountRepository_Add_C
 	return _c
 }
 
-func (_c *AccountRepository_Add_Call) RunAndReturn(run func(*aggregate.Account) error) *AccountRepository_Add_Call {
+func (_c *AccountRepository_Add_Call) RunAndReturn(run func(context.Context, *aggregate.Account) error) *AccountRepository_Add_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// ChangePassword provides a mock function with given fields: account
-func (_m *AccountRepository) ChangePassword(account *aggregate.Account) error {
-	ret := _m.Called(account)
+// ChangePassword provides a mock function with given fields: ctx, account
+func (_m *AccountRepository) ChangePassword(ctx context.Context, account *aggregate.Account) error {
+	ret := _m.Called(ctx, account)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ChangePassword")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*aggregate.Account) error); ok {
-		r0 = rf(account)
+	if rf, ok := ret.Get(0).(func(context.Context, *aggregate.Account) error); ok {
+		r0 = rf(ctx, account)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -94,14 +97,15 @@ type AccountRepository_ChangePassword_Call struct {
 }
 
 // ChangePassword is a helper method to define mock.On call
+//   - ctx context.Context
 //   - account *aggregate.Account
-func (_e *AccountRepository_Expecter) ChangePassword(account interface{}) *AccountRepository_ChangePassword_Call {
-	return &AccountRepository_ChangePassword_Call{Call: _e.mock.On("ChangePassword", account)}
+func (_e *AccountRepository_Expecter) ChangePassword(ctx interface{}, account interface{}) *AccountRepository_ChangePassword_Call {
+	return &AccountRepository_ChangePassword_Call{Call: _e.mock.On("ChangePassword", ctx, account)}
 }
 
-func (_c *AccountRepository_ChangePassword_Call) Run(run func(account *aggregate.Account)) *AccountRepository_ChangePassword_Call {
+func (_c *AccountRepository_ChangePassword_Call) Run(run func(ctx context.Context, account *aggregate.Account)) *AccountRepository_ChangePassword_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*aggregate.Account))
+		run(args[0].(context.Context), args[1].(*aggregate.Account))
 	})
 	return _c
 }
@@ -111,14 +115,14 @@ func (_c *AccountRepository_ChangePassword_Call) Return(_a0 error) *AccountRepos
 	return _c
 }
 
-func (_c *AccountRepository_ChangePassword_Call) RunAndReturn(run func(*aggregate.Account) error) *AccountRepository_ChangePassword_Call {
+func (_c *AccountRepository_ChangePassword_Call) RunAndReturn(run func(context.Context, *aggregate.Account) error) *AccountRepository_ChangePassword_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// Find provides a mock function with given fields: uid
-func (_m *AccountRepository) Find(uid string) (*aggregate.Account, error) {
-	ret := _m.Called(uid)
+// Find provides a mock function with given fields: ctx, uid
+func (_m *AccountRepository) Find(ctx context.Context, uid string) (*aggregate.Account, error) {
+	ret := _m.Called(ctx, uid)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Find")
@@ -126,19 +130,19 @@ func (_m *AccountRepository) Find(uid string) (*aggregate.Account, error) {
 
 	var r0 *aggregate.Account
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string) (*aggregate.Account, error)); ok {
-		return rf(uid)
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*aggregate.Account, error)); ok {
+		return rf(ctx, uid)
 	}
-	if rf, ok := ret.Get(0).(func(string) *aggregate.Account); ok {
-		r0 = rf(uid)
+	if rf, ok := ret.Get(0).(func(context.Context, string) *aggregate.Account); ok {
+		r0 = rf(ctx, uid)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*aggregate.Account)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(uid)
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, uid)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -152,14 +156,15 @@ type AccountRepository_Find_Call struct {
 }
 
 // Find is a helper method to define mock.On call
+//   - ctx context.Context
 //   - uid string
-func (_e *AccountRepository_Expecter) Find(uid interface{}) *AccountRepository_Find_Call {
-	return &AccountRepository_Find_Call{Call: _e.mock.On("Find", uid)}
+func (_e *AccountRepository_Expecter) Find(ctx interface{}, uid interface{}) *AccountRepository_Find_Call {
+	return &AccountRepository_Find_Call{Call: _e.mock.On("Find", ctx, uid)}
 }
 
-func (_c *AccountRepository_Find_Call) Run(run func(uid string)) *AccountRepository_Find_Call {
+func (_c *AccountRepository_Find_Call) Run(run func(ctx context.Context, uid string)) *AccountRepository_Find_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string))
+		run(args[0].(context.Context), args[1].(string))
 	})
 	return _c
 }
@@ -169,7 +174,7 @@ func (_c *AccountRepository_Find_Call) Return(_a0 *aggregate.Account, _a1 error)
 	return _c
 }
 
-func (_c *AccountRepository_Find_Call) RunAndReturn(run func(string) (*aggregate.Account, error)) *AccountRepository_Find_Call {
+func (_c *AccountRepository_Find_Call) RunAndReturn(run func(context.Context, string) (*aggregate.Account, error)) *AccountRepository_Find_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -270,17 +275,17 @@ func (_c *AccountRepository_PubEvent_Call) RunAndReturn(run func(coreaggregate.C
 	return _c
 }
 
-// Update provides a mock function with given fields: account
-func (_m *AccountRepository) Update(account *aggregate.Account) error {
-	ret := _m.Called(account)
+// Update provides a mock function with given fields: ctx, account
+func (_m *AccountRepository) Update(ctx context.Context, account *aggregate.Account) error {
+	ret := _m.Called(ctx, account)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Update")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*aggregate.Account) error); ok {
-		r0 = rf(account)
+	if rf, ok := ret.Get(0).(func(context.Context, *aggregate.Account) error); ok {
+		r0 = rf(ctx, account)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -294,14 +299,15 @@ type AccountRepository_Update_Call struct {
 }
 
 // Update is a helper method to define mock.On call
+//   - ctx context.Context
 //   - account *aggregate.Account
-func (_e *AccountRepository_Expecter) Update(account interface{}) *AccountRepository_Update_Call {
-	return &AccountRepository_Update_Call{Call: _e.mock.On("Update", account)}
+func (_e *AccountRepository_Expecter) Update(ctx interface{}, account interface{}) *AccountRepository_Update_Call {
+	return &AccountRepository_Update_Call{Call: _e.mock.On("Update", ctx, account)}
 }
 
-func (_c *AccountRepository_Update_Call) Run(run func(account *aggregate.Account)) *AccountRepository_Update_Call {
+func (_c *AccountRepository_Update_Call) Run(run func(ctx context.Context, account *aggregate.Account)) *AccountRepository_Update_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*aggregate.Account))
+		run(args[0].(context.Context), args[1].(*aggregate.Account))
 	})
 	return _c
 }
@@ -311,7 +317,7 @@ func (_c *AccountRepository_Update_Call) Return(_a0 error) *AccountRepository_Up
 	return _c
 }
 
-func (_c *AccountRepository_Update_Call) RunAndReturn(run func(*aggregate.Account) error) *AccountRepository_Update_Call {
+func (_c *AccountRepository_Update_Call) RunAndReturn(run func(context.Context, *aggregate.Account) error) *AccountRepository_Update_Call {
 	_c.Call.Return(run)
 	return _c
 }

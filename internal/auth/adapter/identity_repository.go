@@ -1,6 +1,7 @@
 package adapter
 
 import (
+	"context"
 	infradbauth "ddd-sample/infra/db/auth"
 	"ddd-sample/internal/auth/aggregate"
 	"ddd-sample/internal/auth/entity"
@@ -26,9 +27,9 @@ func NewIdentityRepository(mysqlAuth infradbauth.DBAuth) repository.IdentityRepo
 }
 
 // Find 取aggregate
-func (repo *identityRepository) Find(username string) (*aggregate.Identity, error) {
+func (repo *identityRepository) Find(ctx context.Context, username string) (*aggregate.Identity, error) {
 	// 取資料
-	accountTable, err := repo.dbAuth.GetAccountByUsername(username)
+	accountTable, err := repo.dbAuth.GetAccountByUsername(ctx, username)
 	if err != nil {
 		return nil, err
 	}
@@ -53,11 +54,13 @@ func (repo *identityRepository) Find(username string) (*aggregate.Identity, erro
 }
 
 // SaveLoginRecord 登入紀錄
-func (repo *identityRepository) SaveLoginRecord(identity *aggregate.Identity, token valueobject.Token) error {
-	if err := repo.dbAuth.AddLoginRecord(
+func (repo *identityRepository) SaveLoginRecord(ctx context.Context, identity *aggregate.Identity, token valueobject.Token) error {
+	err := repo.dbAuth.AddLoginRecord(
+		ctx,
 		identity.Account().UID(),
 		token.TokenString,
-	); err != nil {
+	)
+	if err != nil {
 		return err
 	}
 
@@ -65,8 +68,7 @@ func (repo *identityRepository) SaveLoginRecord(identity *aggregate.Identity, to
 }
 
 // SaveLoginFailedRecord 登入失敗紀錄
-func (repo *identityRepository) SaveLoginFailedRecord(identity *aggregate.Identity) error {
+func (repo *identityRepository) SaveLoginFailedRecord(_ context.Context, identity *aggregate.Identity) error {
 	// TODO: Redis寫入失敗次數
-
 	return repo.PubEvent(identity)
 }

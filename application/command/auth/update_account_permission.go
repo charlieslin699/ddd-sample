@@ -32,19 +32,19 @@ func NewUpdateAccountPermissionCommand(
 }
 
 func (c *updateAccountPermissionCommand) Execute(
-	_ context.Context, input UpdateAccountPermissionCommandInput,
-) (output UpdateAccountPermissionCommandOutput, err error) {
+	ctx context.Context, input UpdateAccountPermissionCommandInput,
+) (UpdateAccountPermissionCommandOutput, error) {
 	// 取aggregate
-	accountPermission, err := c.accountPermissionRepository.Find(input.AccountUID)
+	accountPermission, err := c.accountPermissionRepository.Find(ctx, input.AccountUID)
 	if err != nil {
-		return
+		return UpdateAccountPermissionCommandOutput{}, err
 	}
 
 	// 更新權限
 	accountPermission.Update(input.PermissionUIDs, c.localTime.NowTime())
 
 	// 儲存
-	err = c.accountPermissionRepository.Update(accountPermission)
+	err = c.accountPermissionRepository.Update(ctx, accountPermission)
 
-	return
+	return UpdateAccountPermissionCommandOutput{}, err
 }

@@ -2,6 +2,7 @@
 package auth
 
 import (
+	"context"
 	"ddd-sample/infra/db"
 	"ddd-sample/infra/db/auth/model"
 	"ddd-sample/infra/db/auth/mysql"
@@ -18,33 +19,33 @@ type DBAuth interface {
 
 // 資料表 Account
 type TableAccount interface {
-	GetAccount(uid string) (model.Account, error)
-	GetAccountByUsername(username string) (model.Account, error)
-	AddAccount(model.Account) error
-	UpdateAccount(model.Account) error
-	ChangePassword(uid, password string) error
+	GetAccount(ctx context.Context, uid string) (model.Account, error)
+	GetAccountByUsername(ctx context.Context, username string) (model.Account, error)
+	AddAccount(ctx context.Context, account model.Account) error
+	UpdateAccount(ctx context.Context, account model.Account) error
+	ChangePassword(ctx context.Context, uid, password string) error
 }
 
 // 資料表 AccountPermission
 type TableAccountPermission interface {
-	GetAccountPermission(accountUID string) ([]model.AccountPermission, error)
-	UpdateAccountPermission(accountUID string, permissions []model.AccountPermission) error // 更新帳號權限(全部刪除後寫入)
+	GetAccountPermission(ctx context.Context, accountUID string) ([]model.AccountPermission, error)
+	UpdateAccountPermission(ctx context.Context, accountUID string, permissions []model.AccountPermission) error // 更新帳號權限(全部刪除後寫入)
 }
 
 // 資料表 Permission
 type TablePermission interface {
-	GetAllPermission() ([]model.Permission, error)
+	GetAllPermission(ctx context.Context) ([]model.Permission, error)
 }
 
 // 資料表 LoginRecord
 type TableLoginRecord interface {
-	AddLoginRecord(username, token string) error
+	AddLoginRecord(ctx context.Context, username, token string) error
 }
 
 // 資料表 ThirdPartyVerification
 type TableThirdPartyVerification interface {
-	AddThirdPartyVerification(model.ThirdPartyVerification) error
-	GetAccountVerification(accountUID string) ([]model.ThirdPartyVerification, error)
+	AddThirdPartyVerification(ctx context.Context, tpv model.ThirdPartyVerification) error
+	GetAccountVerification(ctx context.Context, accountUID string) ([]model.ThirdPartyVerification, error)
 }
 
 // MySQL工廠

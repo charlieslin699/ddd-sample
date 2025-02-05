@@ -24,7 +24,9 @@ type ChangePasswordCommandInput struct {
 type ChangePasswordCommandOutput struct {
 }
 
-func NewChangePasswordCommand(accountRepository repository.AccountRepository, localTime localtime.LocalTime) ChangePasswordCommand {
+func NewChangePasswordCommand(
+	accountRepository repository.AccountRepository, localTime localtime.LocalTime,
+) ChangePasswordCommand {
 	return &changePasswordCommand{
 		accountRepository: accountRepository,
 		localTime:         localTime,
@@ -32,23 +34,23 @@ func NewChangePasswordCommand(accountRepository repository.AccountRepository, lo
 }
 
 func (c *changePasswordCommand) Execute(
-	_ context.Context, input ChangePasswordCommandInput,
-) (output ChangePasswordCommandOutput, err error) {
+	ctx context.Context, input ChangePasswordCommandInput,
+) (ChangePasswordCommandOutput, error) {
 	// 取得帳號
-	account, err := c.accountRepository.Find(input.UID)
+	account, err := c.accountRepository.Find(ctx, input.UID)
 	if err != nil {
-		return
+		return ChangePasswordCommandOutput{}, err
 	}
 
 	// 檢查舊密碼
 	if !account.PasswordVerify(input.OldPassword) {
 		err = errorcode.ErrOldPasswordError
-		return
+		return ChangePasswordCommandOutput{}, err
 	}
 
 	// 變更密碼
 	account.ChangePassword(input.NewPassword, c.localTime.NowTime())
-	err = c.accountRepository.ChangePassword(account)
+	err = c.accountRepository.ChangePassword(ctx, account)
 
-	return
+	return ChangePasswordCommandOutput{}, err
 }

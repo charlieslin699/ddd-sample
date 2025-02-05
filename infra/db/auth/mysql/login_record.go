@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"context"
 	"ddd-sample/infra/db"
 	"ddd-sample/infra/db/auth/model"
 )
@@ -15,12 +16,12 @@ func NewMySQLLoginRecord(conn db.DBConn) *MySQLLoginRecord {
 	}
 }
 
-func (m *MySQLLoginRecord) AddLoginRecord(accountUID, token string) error {
+func (m *MySQLLoginRecord) AddLoginRecord(ctx context.Context, accountUID, token string) error {
 	recordTable := model.LoginRecord{
 		AccountUID: accountUID,
 		Token:      token,
 	}
 
-	result := m.conn.DB().Create(&recordTable)
+	result := m.conn.DB(ctx).Create(&recordTable)
 	return result.Error
 }

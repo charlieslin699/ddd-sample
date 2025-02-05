@@ -1,9 +1,11 @@
 package db
 
 import (
+	"context"
+
 	"gorm.io/gorm"
 )
 
 type DBConn interface {
-	DB() *gorm.DB
+	DB(ctx context.Context) *gorm.DB
 }

@@ -3,7 +3,9 @@
 package repository
 
 import (
+	context "context"
 	aggregate "ddd-sample/internal/auth/aggregate"
+
 	coreaggregate "ddd-sample/internal/core/aggregate"
 
 	mock "github.com/stretchr/testify/mock"
@@ -24,9 +26,9 @@ func (_m *IdentityRepository) EXPECT() *IdentityRepository_Expecter {
 	return &IdentityRepository_Expecter{mock: &_m.Mock}
 }
 
-// Find provides a mock function with given fields: username
-func (_m *IdentityRepository) Find(username string) (*aggregate.Identity, error) {
-	ret := _m.Called(username)
+// Find provides a mock function with given fields: ctx, username
+func (_m *IdentityRepository) Find(ctx context.Context, username string) (*aggregate.Identity, error) {
+	ret := _m.Called(ctx, username)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Find")
@@ -34,19 +36,19 @@ func (_m *IdentityRepository) Find(username string) (*aggregate.Identity, error)
 
 	var r0 *aggregate.Identity
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string) (*aggregate.Identity, error)); ok {
-		return rf(username)
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*aggregate.Identity, error)); ok {
+		return rf(ctx, username)
 	}
-	if rf, ok := ret.Get(0).(func(string) *aggregate.Identity); ok {
-		r0 = rf(username)
+	if rf, ok := ret.Get(0).(func(context.Context, string) *aggregate.Identity); ok {
+		r0 = rf(ctx, username)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*aggregate.Identity)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(username)
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, username)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -60,14 +62,15 @@ type IdentityRepository_Find_Call struct {
 }
 
 // Find is a helper method to define mock.On call
+//   - ctx context.Context
 //   - username string
-func (_e *IdentityRepository_Expecter) Find(username interface{}) *IdentityRepository_Find_Call {
-	return &IdentityRepository_Find_Call{Call: _e.mock.On("Find", username)}
+func (_e *IdentityRepository_Expecter) Find(ctx interface{}, username interface{}) *IdentityRepository_Find_Call {
+	return &IdentityRepository_Find_Call{Call: _e.mock.On("Find", ctx, username)}
 }
 
-func (_c *IdentityRepository_Find_Call) Run(run func(username string)) *IdentityRepository_Find_Call {
+func (_c *IdentityRepository_Find_Call) Run(run func(ctx context.Context, username string)) *IdentityRepository_Find_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string))
+		run(args[0].(context.Context), args[1].(string))
 	})
 	return _c
 }
@@ -77,7 +80,7 @@ func (_c *IdentityRepository_Find_Call) Return(_a0 *aggregate.Identity, _a1 erro
 	return _c
 }
 
-func (_c *IdentityRepository_Find_Call) RunAndReturn(run func(string) (*aggregate.Identity, error)) *IdentityRepository_Find_Call {
+func (_c *IdentityRepository_Find_Call) RunAndReturn(run func(context.Context, string) (*aggregate.Identity, error)) *IdentityRepository_Find_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -128,17 +131,17 @@ func (_c *IdentityRepository_PubEvent_Call) RunAndReturn(run func(coreaggregate.
 	return _c
 }
 
-// SaveLoginFailedRecord provides a mock function with given fields: identity
-func (_m *IdentityRepository) SaveLoginFailedRecord(identity *aggregate.Identity) error {
-	ret := _m.Called(identity)
+// SaveLoginFailedRecord provides a mock function with given fields: ctx, identity
+func (_m *IdentityRepository) SaveLoginFailedRecord(ctx context.Context, identity *aggregate.Identity) error {
+	ret := _m.Called(ctx, identity)
 
 	if len(ret) == 0 {
 		panic("no return value specified for SaveLoginFailedRecord")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*aggregate.Identity) error); ok {
-		r0 = rf(identity)
+	if rf, ok := ret.Get(0).(func(context.Context, *aggregate.Identity) error); ok {
+		r0 = rf(ctx, identity)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -152,14 +155,15 @@ type IdentityRepository_SaveLoginFailedRecord_Call struct {
 }
 
 // SaveLoginFailedRecord is a helper method to define mock.On call
+//   - ctx context.Context
 //   - identity *aggregate.Identity
-func (_e *IdentityRepository_Expecter) SaveLoginFailedRecord(identity interface{}) *IdentityRepository_SaveLoginFailedRecord_Call {
-	return &IdentityRepository_SaveLoginFailedRecord_Call{Call: _e.mock.On("SaveLoginFailedRecord", identity)}
+func (_e *IdentityRepository_Expecter) SaveLoginFailedRecord(ctx interface{}, identity interface{}) *IdentityRepository_SaveLoginFailedRecord_Call {
+	return &IdentityRepository_SaveLoginFailedRecord_Call{Call: _e.mock.On("SaveLoginFailedRecord", ctx, identity)}
 }
 
-func (_c *IdentityRepository_SaveLoginFailedRecord_Call) Run(run func(identity *aggregate.Identity)) *IdentityRepository_SaveLoginFailedRecord_Call {
+func (_c *IdentityRepository_SaveLoginFailedRecord_Call) Run(run func(ctx context.Context, identity *aggregate.Identity)) *IdentityRepository_SaveLoginFailedRecord_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*aggregate.Identity))
+		run(args[0].(context.Context), args[1].(*aggregate.Identity))
 	})
 	return _c
 }
@@ -169,22 +173,22 @@ func (_c *IdentityRepository_SaveLoginFailedRecord_Call) Return(_a0 error) *Iden
 	return _c
 }
 
-func (_c *IdentityRepository_SaveLoginFailedRecord_Call) RunAndReturn(run func(*aggregate.Identity) error) *IdentityRepository_SaveLoginFailedRecord_Call {
+func (_c *IdentityRepository_SaveLoginFailedRecord_Call) RunAndReturn(run func(context.Context, *aggregate.Identity) error) *IdentityRepository_SaveLoginFailedRecord_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// SaveLoginRecord provides a mock function with given fields: identity, token
-func (_m *IdentityRepository) SaveLoginRecord(identity *aggregate.Identity, token valueobject.Token) error {
-	ret := _m.Called(identity, token)
+// SaveLoginRecord provides a mock function with given fields: ctx, identity, token
+func (_m *IdentityRepository) SaveLoginRecord(ctx context.Context, identity *aggregate.Identity, token valueobject.Token) error {
+	ret := _m.Called(ctx, identity, token)
 
 	if len(ret) == 0 {
 		panic("no return value specified for SaveLoginRecord")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*aggregate.Identity, valueobject.Token) error); ok {
-		r0 = rf(identity, token)
+	if rf, ok := ret.Get(0).(func(context.Context, *aggregate.Identity, valueobject.Token) error); ok {
+		r0 = rf(ctx, identity, token)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -198,15 +202,16 @@ type IdentityRepository_SaveLoginRecord_Call struct {
 }
 
 // SaveLoginRecord is a helper method to define mock.On call
+//   - ctx context.Context
 //   - identity *aggregate.Identity
 //   - token valueobject.Token
-func (_e *IdentityRepository_Expecter) SaveLoginRecord(identity interface{}, token interface{}) *IdentityRepository_SaveLoginRecord_Call {
-	return &IdentityRepository_SaveLoginRecord_Call{Call: _e.mock.On("SaveLoginRecord", identity, token)}
+func (_e *IdentityRepository_Expecter) SaveLoginRecord(ctx interface{}, identity interface{}, token interface{}) *IdentityRepository_SaveLoginRecord_Call {
+	return &IdentityRepository_SaveLoginRecord_Call{Call: _e.mock.On("SaveLoginRecord", ctx, identity, token)}
 }
 
-func (_c *IdentityRepository_SaveLoginRecord_Call) Run(run func(identity *aggregate.Identity, token valueobject.Token)) *IdentityRepository_SaveLoginRecord_Call {
+func (_c *IdentityRepository_SaveLoginRecord_Call) Run(run func(ctx context.Context, identity *aggregate.Identity, token valueobject.Token)) *IdentityRepository_SaveLoginRecord_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*aggregate.Identity), args[1].(valueobject.Token))
+		run(args[0].(context.Context), args[1].(*aggregate.Identity), args[2].(valueobject.Token))
 	})
 	return _c
 }
@@ -216,7 +221,7 @@ func (_c *IdentityRepository_SaveLoginRecord_Call) Return(_a0 error) *IdentityRe
 	return _c
 }
 
-func (_c *IdentityRepository_SaveLoginRecord_Call) RunAndReturn(run func(*aggregate.Identity, valueobject.Token) error) *IdentityRepository_SaveLoginRecord_Call {
+func (_c *IdentityRepository_SaveLoginRecord_Call) RunAndReturn(run func(context.Context, *aggregate.Identity, valueobject.Token) error) *IdentityRepository_SaveLoginRecord_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -33,25 +33,27 @@ func NewUpdateAccountCommand(accountRepository repository.AccountRepository, loc
 	}
 }
 
-func (c *updateAccountCommand) Execute(_ context.Context, input UpdateAccountCommandInput) (output UpdateAccountCommandOutput, err error) {
+func (c *updateAccountCommand) Execute(
+	ctx context.Context, input UpdateAccountCommandInput,
+) (UpdateAccountCommandOutput, error) {
 	// 取得帳號
-	account, err := c.accountRepository.Find(input.UID)
+	account, err := c.accountRepository.Find(ctx, input.UID)
 	if err != nil {
-		return
+		return UpdateAccountCommandOutput{}, err
 	}
 
 	// 轉換列舉
 	accountStatus, err := enum.ConvertToAccountStatus(input.Status)
 	if err != nil {
-		return
+		return UpdateAccountCommandOutput{}, err
 	}
 
 	// 更新帳號
 	account.Update(accountStatus, input.IsEnabledOTP, c.localTime.NowTime())
-	err = c.accountRepository.Update(account)
+	err = c.accountRepository.Update(ctx, account)
 	if err != nil {
-		return
+		return UpdateAccountCommandOutput{}, err
 	}
 
-	return
+	return UpdateAccountCommandOutput{}, nil
 }

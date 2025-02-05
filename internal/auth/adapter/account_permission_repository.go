@@ -1,6 +1,7 @@
 package adapter
 
 import (
+	"context"
 	infradbauth "ddd-sample/infra/db/auth"
 	infradbauthmodel "ddd-sample/infra/db/auth/model"
 	"ddd-sample/internal/auth/aggregate"
@@ -26,21 +27,21 @@ func NewAccountPermissionRepository(dbAuth infradbauth.DBAuth) repository.Accoun
 }
 
 // 取aggregate
-func (repo *accountPermissionRepository) Find(accountUID string) (*aggregate.AccountPermission, error) {
+func (repo *accountPermissionRepository) Find(ctx context.Context, accountUID string) (*aggregate.AccountPermission, error) {
 	// 取帳號
-	accountData, err := repo.dbAuth.GetAccount(accountUID)
+	accountData, err := repo.dbAuth.GetAccount(ctx, accountUID)
 	if err != nil {
 		return nil, err
 	}
 
 	// 取得全部的權限
-	allPermissionData, err := repo.dbAuth.GetAllPermission()
+	allPermissionData, err := repo.dbAuth.GetAllPermission(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	// 取得帳號的權限
-	accountPermissions, err := repo.dbAuth.GetAccountPermission(accountData.UID)
+	accountPermissions, err := repo.dbAuth.GetAccountPermission(ctx, accountData.UID)
 	if err != nil {
 		return nil, err
 	}
@@ -68,12 +69,12 @@ func (repo *accountPermissionRepository) Find(accountUID string) (*aggregate.Acc
 }
 
 // 更新aggregate
-func (repo *accountPermissionRepository) Update(a *aggregate.AccountPermission) error {
+func (repo *accountPermissionRepository) Update(ctx context.Context, a *aggregate.AccountPermission) error {
 	// 轉換成db model
 	accountPermissions := repo.parseToAccountPermissionModel(a.Account().UID(), a.Permissions())
 
 	// 更新帳號權限
-	if err := repo.dbAuth.UpdateAccountPermission(a.Account().UID(), accountPermissions); err != nil {
+	if err := repo.dbAuth.UpdateAccountPermission(ctx, a.Account().UID(), accountPermissions); err != nil {
 		return err
 	}
 

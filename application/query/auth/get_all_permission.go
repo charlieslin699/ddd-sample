@@ -32,9 +32,9 @@ func NewGetAllPermissionQuery(dbAuth infradbauth.DBAuth) GetAllPermissionQuery {
 	}
 }
 
-func (q *getAllPermissionQuery) Execute(_ context.Context, _ GetAllPermissionQueryInput) (output GetAllPermissionQueryOutput, err error) {
+func (q *getAllPermissionQuery) Execute(ctx context.Context, _ GetAllPermissionQueryInput) (output GetAllPermissionQueryOutput, err error) {
 	// 取得所有權限
-	permissionData, err := q.dbAuth.GetAllPermission()
+	permissionData, err := q.dbAuth.GetAllPermission(ctx)
 	if err != nil {
 		return
 	}

@@ -59,9 +59,9 @@ func Test_loginCommand_Execute(t *testing.T) {
 
 		// mocks
 		mockAuthRepository := mockauthrepository.NewIdentityRepository(t)
-		mockAuthRepository.On("Find", mock.Anything).
+		mockAuthRepository.On("Find", arg.ctx, mock.Anything).
 			Return(aggregate.NewIdenetity(arg.input.Username, arg.input.Password), nil)
-		mockAuthRepository.On("SaveLoginRecord", mock.Anything, mock.Anything).
+		mockAuthRepository.On("SaveLoginRecord", arg.ctx, mock.Anything, mock.Anything).
 			Return(nil)
 
 		mockEnv := mockenv.NewEnv(t)
@@ -88,7 +88,7 @@ func Test_loginCommand_Execute(t *testing.T) {
 
 		// mocks
 		mockAuthRepository := mockauthrepository.NewIdentityRepository(t)
-		mockAuthRepository.On("Find", mock.Anything).
+		mockAuthRepository.On("Find", arg.ctx, mock.Anything).
 			Return(nil, assert.AnError)
 
 		mockEnv := mockenv.NewEnv(t)
@@ -115,9 +115,9 @@ func Test_loginCommand_Execute(t *testing.T) {
 
 		// mocks
 		mockAuthRepository := mockauthrepository.NewIdentityRepository(t)
-		mockAuthRepository.On("Find", mock.Anything).
+		mockAuthRepository.On("Find", arg.ctx, mock.Anything).
 			Return(aggregate.NewIdenetity("bar", "foo"), nil)
-		mockAuthRepository.On("SaveLoginFailedRecord", mock.Anything).
+		mockAuthRepository.On("SaveLoginFailedRecord", arg.ctx, mock.Anything).
 			Return(nil)
 
 		mockEnv := mockenv.NewEnv(t)
@@ -144,9 +144,9 @@ func Test_loginCommand_Execute(t *testing.T) {
 
 		// mocks
 		mockAuthRepository := mockauthrepository.NewIdentityRepository(t)
-		mockAuthRepository.On("Find", mock.Anything).
+		mockAuthRepository.On("Find", arg.ctx, mock.Anything).
 			Return(aggregate.NewIdenetity(arg.input.Username, arg.input.Password), nil)
-		mockAuthRepository.On("SaveLoginRecord", mock.Anything, mock.Anything).
+		mockAuthRepository.On("SaveLoginRecord", arg.ctx, mock.Anything, mock.Anything).
 			Return(assert.AnError)
 
 		mockEnv := mockenv.NewEnv(t)

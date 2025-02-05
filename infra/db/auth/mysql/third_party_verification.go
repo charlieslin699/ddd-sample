@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"context"
 	"ddd-sample/infra/db"
 	"ddd-sample/infra/db/auth/model"
 )
@@ -15,8 +16,10 @@ func NewMySQLThirdPartyVerification(conn db.DBConn) *MySQLThirdPartyVerification
 	}
 }
 
-func (m *MySQLThirdPartyVerification) AddThirdPartyVerification(thirdPartyVerification model.ThirdPartyVerification) error {
-	result := m.conn.DB().Create(&thirdPartyVerification)
+func (m *MySQLThirdPartyVerification) AddThirdPartyVerification(
+	ctx context.Context, thirdPartyVerification model.ThirdPartyVerification,
+) error {
+	result := m.conn.DB(ctx).Create(&thirdPartyVerification)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -24,9 +27,11 @@ func (m *MySQLThirdPartyVerification) AddThirdPartyVerification(thirdPartyVerifi
 	return nil
 }
 
-func (m *MySQLThirdPartyVerification) GetAccountVerification(accountUID string) ([]model.ThirdPartyVerification, error) {
+func (m *MySQLThirdPartyVerification) GetAccountVerification(
+	ctx context.Context, accountUID string,
+) ([]model.ThirdPartyVerification, error) {
 	thirdPartyVerification := []model.ThirdPartyVerification{}
-	result := m.conn.DB().Where("accountUID = ?", accountUID).
+	result := m.conn.DB(ctx).Where("accountUID = ?", accountUID).
 		Find(&thirdPartyVerification)
 
 	if result.Error != nil {

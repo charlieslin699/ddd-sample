@@ -1,6 +1,7 @@
 package adapter
 
 import (
+	"context"
 	infradbauth "ddd-sample/infra/db/auth"
 	infradbauthmodel "ddd-sample/infra/db/auth/model"
 	"ddd-sample/internal/auth/aggregate"
@@ -34,15 +35,15 @@ func (r *accountRepository) New(username, password string, nowTime time.Time) *a
 }
 
 // Find 取aggregate
-func (r *accountRepository) Find(uid string) (*aggregate.Account, error) {
+func (r *accountRepository) Find(ctx context.Context, uid string) (*aggregate.Account, error) {
 	// 取資料
-	accountData, err := r.dbAuth.GetAccount(uid)
+	accountData, err := r.dbAuth.GetAccount(ctx, uid)
 	if err != nil {
 		return nil, err
 	}
 
 	// 取得帳號的驗證資料
-	verifications, err := r.dbAuth.GetAccountVerification(accountData.UID)
+	verifications, err := r.dbAuth.GetAccountVerification(ctx, accountData.UID)
 	if err != nil {
 		return nil, err
 	}
@@ -71,14 +72,17 @@ func (r *accountRepository) Find(uid string) (*aggregate.Account, error) {
 }
 
 // Add 新增帳號
-func (r *accountRepository) Add(account *aggregate.Account) error {
-	err := r.dbAuth.AddAccount(infradbauthmodel.Account{
-		UID:      account.Account().UID(),
-		Username: account.Account().Username(),
-		Password: account.Account().Password(),
-		Status:   account.Account().Status().Value(),
-		Secret:   account.Account().Secret(),
-	})
+func (r *accountRepository) Add(ctx context.Context, account *aggregate.Account) error {
+	err := r.dbAuth.AddAccount(
+		ctx,
+		infradbauthmodel.Account{
+			UID:      account.Account().UID(),
+			Username: account.Account().Username(),
+			Password: account.Account().Password(),
+			Status:   account.Account().Status().Value(),
+			Secret:   account.Account().Secret(),
+		},
+	)
 	if err != nil {
 		return err
 	}
@@ -87,11 +91,14 @@ func (r *accountRepository) Add(account *aggregate.Account) error {
 }
 
 // Update 更新帳號
-func (r *accountRepository) Update(account *aggregate.Account) error {
-	err := r.dbAuth.UpdateAccount(infradbauthmodel.Account{
-		UID:    account.Account().UID(),
-		Status: account.Account().Status().Value(),
-	})
+func (r *accountRepository) Update(ctx context.Context, account *aggregate.Account) error {
+	err := r.dbAuth.UpdateAccount(
+		ctx,
+		infradbauthmodel.Account{
+			UID:    account.Account().UID(),
+			Status: account.Account().Status().Value(),
+		},
+	)
 	if err != nil {
 		return err
 	}
@@ -100,8 +107,8 @@ func (r *accountRepository) Update(account *aggregate.Account) error {
 }
 
 // ChangePassword 更改密碼
-func (r *accountRepository) ChangePassword(account *aggregate.Account) error {
-	err := r.dbAuth.ChangePassword(account.Account().UID(), account.Account().Password())
+func (r *accountRepository) ChangePassword(ctx context.Context, account *aggregate.Account) error {
+	err := r.dbAuth.ChangePassword(ctx, account.Account().UID(), account.Account().Password())
 	if err != nil {
 		return err
 	}

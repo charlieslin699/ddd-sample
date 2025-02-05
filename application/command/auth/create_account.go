@@ -30,16 +30,19 @@ func NewCreateAccountCommand(accountRepository repository.AccountRepository, loc
 	}
 }
 
-func (c *createAccountCommand) Execute(_ context.Context, input CreateAccountCommandInput) (output CreateAccountCommandOutput, err error) {
+func (c *createAccountCommand) Execute(
+	ctx context.Context, input CreateAccountCommandInput,
+) (CreateAccountCommandOutput, error) {
 	// 建立帳號
 	account := c.accountRepository.New(input.Username, input.Password, c.localTime.NowTime())
 
 	// 儲存帳號
-	err = c.accountRepository.Add(account)
+	err := c.accountRepository.Add(ctx, account)
 	if err != nil {
-		return
+		return CreateAccountCommandOutput{}, err
 	}
 
-	output.UID = account.Account().UID()
-	return
+	return CreateAccountCommandOutput{
+		UID: account.Account().UID(),
+	}, nil
 }

@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"context"
 	"ddd-sample/infra/db"
 	"ddd-sample/infra/db/auth/model"
 )
@@ -16,9 +17,11 @@ func NewMySQLAccountPermission(conn db.DBConn) *MySQLAccountPermission {
 }
 
 // 取得帳號權限
-func (m *MySQLAccountPermission) GetAccountPermission(accountUID string) ([]model.AccountPermission, error) {
+func (m *MySQLAccountPermission) GetAccountPermission(
+	ctx context.Context, accountUID string,
+) ([]model.AccountPermission, error) {
 	accountPermissions := []model.AccountPermission{}
-	result := m.conn.DB().Where("accountUID = ?", accountUID).
+	result := m.conn.DB(ctx).Where("accountUID = ?", accountUID).
 		Find(&accountPermissions)
 
 	if result.Error != nil {
@@ -29,13 +32,17 @@ func (m *MySQLAccountPermission) GetAccountPermission(accountUID string) ([]mode
 }
 
 // 更新帳號權限(全部刪除後寫入)
-func (m *MySQLAccountPermission) UpdateAccountPermission(accountUID string, permissions []model.AccountPermission) error {
-	result := m.conn.DB().Where("accountUID = ?", accountUID).Delete(model.AccountPermission{})
+func (m *MySQLAccountPermission) UpdateAccountPermission(
+	ctx context.Context, accountUID string, permissions []model.AccountPermission,
+) error {
+	result := m.conn.DB(ctx).
+		Where("accountUID = ?", accountUID).
+		Delete(model.AccountPermission{})
 	if result.Error != nil {
 		return result.Error
 	}
 
-	result = m.conn.DB().Create(permissions)
+	result = m.conn.DB(ctx).Create(permissions)
 	if result.Error != nil {
 		return result.Error
 	}

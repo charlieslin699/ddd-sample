@@ -32,9 +32,9 @@ func NewGetAccountQuery(dbAuth infradbauth.DBAuth, env env.Env) GetAccountQuery 
 	}
 }
 
-func (q *getAccountQuery) Execute(_ context.Context, input GetAccountQueryInput) (output GetAccountQueryOutput, err error) {
+func (q *getAccountQuery) Execute(ctx context.Context, input GetAccountQueryInput) (output GetAccountQueryOutput, err error) {
 	// 取帳號資料
-	accountData, err := q.dbAuth.GetAccount(input.UID)
+	accountData, err := q.dbAuth.GetAccount(ctx, input.UID)
 	if err != nil {
 		return
 	}
