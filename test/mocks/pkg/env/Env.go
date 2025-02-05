@@ -123,6 +123,52 @@ func (_c *Env_GetValueByKey_Call) RunAndReturn(run func(string) (string, bool)) 
 	return _c
 }
 
+// MustGetValueByKey provides a mock function with given fields: key
+func (_m *Env) MustGetValueByKey(key string) string {
+	ret := _m.Called(key)
+
+	if len(ret) == 0 {
+		panic("no return value specified for MustGetValueByKey")
+	}
+
+	var r0 string
+	if rf, ok := ret.Get(0).(func(string) string); ok {
+		r0 = rf(key)
+	} else {
+		r0 = ret.Get(0).(string)
+	}
+
+	return r0
+}
+
+// Env_MustGetValueByKey_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'MustGetValueByKey'
+type Env_MustGetValueByKey_Call struct {
+	*mock.Call
+}
+
+// MustGetValueByKey is a helper method to define mock.On call
+//   - key string
+func (_e *Env_Expecter) MustGetValueByKey(key interface{}) *Env_MustGetValueByKey_Call {
+	return &Env_MustGetValueByKey_Call{Call: _e.mock.On("MustGetValueByKey", key)}
+}
+
+func (_c *Env_MustGetValueByKey_Call) Run(run func(key string)) *Env_MustGetValueByKey_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string))
+	})
+	return _c
+}
+
+func (_c *Env_MustGetValueByKey_Call) Return(_a0 string) *Env_MustGetValueByKey_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Env_MustGetValueByKey_Call) RunAndReturn(run func(string) string) *Env_MustGetValueByKey_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // NewEnv creates a new instance of Env. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewEnv(t interface {

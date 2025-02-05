@@ -36,9 +36,9 @@ func InitRouter(server httpserver.HTTPServer) {
 	// DBConn
 	accountDBConn, err := db.NewMySQLConn(
 		db.WithDBName(dbConfig.Auth.DBName),
-		db.WithAddr(getEnv(env, dbConfig.Auth.AddrEnv)),
-		db.WithUsername(getEnv(env, dbConfig.Auth.UsernameEnv)),
-		db.WithPassword(getEnv(env, dbConfig.Auth.PasswordEnv)),
+		db.WithAddr(env.MustGetValueByKey(dbConfig.Auth.AddrEnv)),
+		db.WithUsername(env.MustGetValueByKey(dbConfig.Auth.UsernameEnv)),
+		db.WithPassword(env.MustGetValueByKey(dbConfig.Auth.PasswordEnv)),
 	)
 	if err != nil {
 		panic(err)
@@ -96,13 +96,4 @@ func InitRouter(server httpserver.HTTPServer) {
 		httpserver.CatchError(errorhandler.HandleError(langQuery)),
 		httpserver.CatchPanic(panichandler.HandlePanic(langQuery)),
 	)
-}
-
-func getEnv(env pkgenv.Env, key string) string {
-	value, isExist := env.GetValueByKey(key)
-	if !isExist {
-		panic(fmt.Sprintf("環境變數[%s]未設定!", key))
-	}
-
-	return value
 }
