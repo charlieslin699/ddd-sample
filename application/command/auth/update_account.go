@@ -18,7 +18,7 @@ type updateAccountCommand struct {
 
 type UpdateAccountCommandInput struct {
 	UID          string
-	Status       uint
+	Status       enum.AccountStatus
 	IsEnabledOTP bool
 }
 
@@ -42,14 +42,8 @@ func (c *updateAccountCommand) Execute(
 		return UpdateAccountCommandOutput{}, err
 	}
 
-	// 轉換列舉
-	accountStatus, err := enum.ConvertToAccountStatus(input.Status)
-	if err != nil {
-		return UpdateAccountCommandOutput{}, err
-	}
-
 	// 更新帳號
-	account.Update(accountStatus, input.IsEnabledOTP, c.localTime.NowTime())
+	account.Update(input.Status, input.IsEnabledOTP, c.localTime.NowTime())
 	err = c.accountRepository.Update(ctx, account)
 	if err != nil {
 		return UpdateAccountCommandOutput{}, err

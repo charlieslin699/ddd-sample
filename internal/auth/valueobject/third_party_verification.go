@@ -20,27 +20,8 @@ func Build(enumValues ...enum.ThirdPartyVerification) ThirdPartyVerification {
 	return result
 }
 
-func BuildByValue(values ...uint) ThirdPartyVerification {
-	result := ThirdPartyVerification{}
-
-	for _, v := range values {
-		result.EnableByValue(v)
-	}
-
-	return result
-}
-
 func (t *ThirdPartyVerification) Enable(e enum.ThirdPartyVerification) {
 	if e == enum.ThirdPartyVerificationOTP {
 		t.OTP = true
 	}
-}
-
-func (t *ThirdPartyVerification) EnableByValue(v uint) {
-	enumValue, err := enum.ConvertToThirdPartyVerification(v)
-	if err != nil {
-		return
-	}
-
-	t.Enable(enumValue)
 }

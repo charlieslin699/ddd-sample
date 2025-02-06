@@ -5,7 +5,6 @@ import (
 	infradbauth "ddd-sample/infra/db/auth"
 	"ddd-sample/internal/auth/aggregate"
 	"ddd-sample/internal/auth/entity"
-	"ddd-sample/internal/auth/enum"
 	"ddd-sample/internal/auth/repository"
 	"ddd-sample/internal/auth/valueobject"
 	coreradapter "ddd-sample/internal/core/adapter"
@@ -29,24 +28,18 @@ func NewIdentityRepository(mysqlAuth infradbauth.DBAuth) repository.IdentityRepo
 // Find 取aggregate
 func (repo *identityRepository) Find(ctx context.Context, username string) (*aggregate.Identity, error) {
 	// 取資料
-	accountTable, err := repo.dbAuth.GetAccountByUsername(ctx, username)
-	if err != nil {
-		return nil, err
-	}
-
-	// 轉換列舉
-	status, err := enum.ConvertToAccountStatus(accountTable.Status)
+	accountData, err := repo.dbAuth.GetAccountByUsername(ctx, username)
 	if err != nil {
 		return nil, err
 	}
 
 	identity := aggregate.BuildIdenetity(
 		entity.BuildAccount(
-			accountTable.UID,
-			accountTable.Username,
-			accountTable.Password,
-			accountTable.Secret,
-			status,
+			accountData.UID,
+			accountData.Username,
+			accountData.Password,
+			accountData.Secret,
+			accountData.Status,
 		),
 	)
 

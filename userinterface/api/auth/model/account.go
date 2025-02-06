@@ -1,5 +1,7 @@
 package model
 
+import "ddd-sample/internal/auth/enum"
+
 type PostAccountRequest struct {
 	Username string `json:"username" binding:"required"` // 帳號
 	Password string `json:"password" binding:"required"` // 密碼
@@ -14,8 +16,8 @@ type PutAccountRequestURI struct {
 }
 
 type PutAccountRequest struct {
-	Status       uint `json:"status" binding:"required"`       // 狀態
-	IsEnabledOTP bool `json:"isEnabledOTP" binding:"required"` // 是否啟用OTP
+	Status       enum.AccountStatus `json:"status" binding:"required"`       // 狀態
+	IsEnabledOTP bool               `json:"isEnabledOTP" binding:"required"` // 是否啟用OTP
 }
 
 type PutAccountResponse struct {
