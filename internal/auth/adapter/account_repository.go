@@ -6,7 +6,6 @@ import (
 	infradbauthmodel "ddd-sample/infra/db/auth/model"
 	"ddd-sample/internal/auth/aggregate"
 	"ddd-sample/internal/auth/entity"
-	"ddd-sample/internal/auth/enum"
 	"ddd-sample/internal/auth/repository"
 	"ddd-sample/internal/auth/valueobject"
 	coreadapter "ddd-sample/internal/core/adapter"
@@ -48,12 +47,6 @@ func (r *accountRepository) Find(ctx context.Context, uid string) (*aggregate.Ac
 		return nil, err
 	}
 
-	// 轉換列舉
-	status, err := enum.ConvertToAccountStatus(accountData.Status)
-	if err != nil {
-		return nil, err
-	}
-
 	// 轉換value object
 	thirdPartyVerification := r.parseToThirdPartyVerification(verifications)
 
@@ -63,7 +56,7 @@ func (r *accountRepository) Find(ctx context.Context, uid string) (*aggregate.Ac
 			accountData.Username,
 			accountData.Password,
 			accountData.Secret,
-			status,
+			accountData.Status,
 		),
 		thirdPartyVerification,
 	)
@@ -79,7 +72,7 @@ func (r *accountRepository) Add(ctx context.Context, account *aggregate.Account)
 			UID:      account.Account().UID(),
 			Username: account.Account().Username(),
 			Password: account.Account().Password(),
-			Status:   account.Account().Status().Value(),
+			Status:   account.Account().Status(),
 			Secret:   account.Account().Secret(),
 		},
 	)
@@ -96,7 +89,7 @@ func (r *accountRepository) Update(ctx context.Context, account *aggregate.Accou
 		ctx,
 		infradbauthmodel.Account{
 			UID:    account.Account().UID(),
-			Status: account.Account().Status().Value(),
+			Status: account.Account().Status(),
 		},
 	)
 	if err != nil {
@@ -123,7 +116,7 @@ func (r *accountRepository) parseToThirdPartyVerification(
 	thirdPartyVerification := valueobject.NewThirdPartyVerification()
 
 	for _, verification := range verifications {
-		thirdPartyVerification.EnableByValue(verification.VerificationType)
+		thirdPartyVerification.Enable(verification.VerificationType)
 	}
 
 	return thirdPartyVerification

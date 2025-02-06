@@ -6,7 +6,6 @@ import (
 	infradbauthmodel "ddd-sample/infra/db/auth/model"
 	"ddd-sample/internal/auth/aggregate"
 	"ddd-sample/internal/auth/entity"
-	"ddd-sample/internal/auth/enum"
 	"ddd-sample/internal/auth/repository"
 	"ddd-sample/internal/auth/valueobject"
 	coreadapter "ddd-sample/internal/core/adapter"
@@ -46,12 +45,6 @@ func (repo *accountPermissionRepository) Find(ctx context.Context, accountUID st
 		return nil, err
 	}
 
-	// 轉換enum狀態
-	accountStatus, err := enum.ConvertToAccountStatus(accountData.Status)
-	if err != nil {
-		return nil, err
-	}
-
 	// 轉換value object
 	permissions := repo.parseToPermissionValueObject(allPermissionData, accountPermissions)
 
@@ -62,7 +55,7 @@ func (repo *accountPermissionRepository) Find(ctx context.Context, accountUID st
 			accountData.Username,
 			accountData.Password,
 			accountData.Secret,
-			accountStatus,
+			accountData.Status,
 		), permissions)
 
 	return a, nil

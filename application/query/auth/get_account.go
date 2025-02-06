@@ -4,6 +4,7 @@ import (
 	"context"
 	"ddd-sample/application/query"
 	infradbauth "ddd-sample/infra/db/auth"
+	"ddd-sample/internal/auth/enum"
 	"ddd-sample/pkg/env"
 	"ddd-sample/pkg/otp"
 )
@@ -21,7 +22,7 @@ type GetAccountQueryInput struct {
 
 type GetAccountQueryOutput struct {
 	Username string
-	Status   uint
+	Status   enum.AccountStatus
 	OTPURL   string
 }
 
