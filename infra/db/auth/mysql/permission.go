@@ -6,17 +6,17 @@ import (
 	"ddd-sample/infra/db/auth/model"
 )
 
-type MySQLPermission struct {
+type Permission struct {
 	conn db.DBConn
 }
 
-func NewMySQLPermission(conn db.DBConn) *MySQLPermission {
-	return &MySQLPermission{
+func NewPermission(conn db.DBConn) *Permission {
+	return &Permission{
 		conn: conn,
 	}
 }
 
-func (m *MySQLPermission) GetAllPermission(ctx context.Context) ([]model.Permission, error) {
+func (m *Permission) GetAllPermission(ctx context.Context) ([]model.Permission, error) {
 	permissions := []model.Permission{}
 	result := m.conn.DB(ctx).Find(&permissions)
 	if result.Error != nil {

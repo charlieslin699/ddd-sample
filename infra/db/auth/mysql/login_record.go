@@ -6,17 +6,17 @@ import (
 	"ddd-sample/infra/db/auth/model"
 )
 
-type MySQLLoginRecord struct {
+type LoginRecord struct {
 	conn db.DBConn
 }
 
-func NewMySQLLoginRecord(conn db.DBConn) *MySQLLoginRecord {
-	return &MySQLLoginRecord{
+func NewLoginRecord(conn db.DBConn) *LoginRecord {
+	return &LoginRecord{
 		conn: conn,
 	}
 }
 
-func (m *MySQLLoginRecord) AddLoginRecord(ctx context.Context, accountUID, token string) error {
+func (m *LoginRecord) AddLoginRecord(ctx context.Context, accountUID, token string) error {
 	recordTable := model.LoginRecord{
 		AccountUID: accountUID,
 		Token:      token,

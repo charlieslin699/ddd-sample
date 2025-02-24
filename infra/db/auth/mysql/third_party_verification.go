@@ -6,17 +6,17 @@ import (
 	"ddd-sample/infra/db/auth/model"
 )
 
-type MySQLThirdPartyVerification struct {
+type ThirdPartyVerification struct {
 	conn db.DBConn
 }
 
-func NewMySQLThirdPartyVerification(conn db.DBConn) *MySQLThirdPartyVerification {
-	return &MySQLThirdPartyVerification{
+func NewThirdPartyVerification(conn db.DBConn) *ThirdPartyVerification {
+	return &ThirdPartyVerification{
 		conn: conn,
 	}
 }
 
-func (m *MySQLThirdPartyVerification) AddThirdPartyVerification(
+func (m *ThirdPartyVerification) AddThirdPartyVerification(
 	ctx context.Context, thirdPartyVerification model.ThirdPartyVerification,
 ) error {
 	result := m.conn.DB(ctx).Create(&thirdPartyVerification)
@@ -27,7 +27,7 @@ func (m *MySQLThirdPartyVerification) AddThirdPartyVerification(
 	return nil
 }
 
-func (m *MySQLThirdPartyVerification) GetAccountVerification(
+func (m *ThirdPartyVerification) GetAccountVerification(
 	ctx context.Context, accountUID string,
 ) ([]model.ThirdPartyVerification, error) {
 	thirdPartyVerification := []model.ThirdPartyVerification{}

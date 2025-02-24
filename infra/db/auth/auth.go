@@ -57,10 +57,10 @@ func NewMySQLAuth(conn db.DBConn) DBAuth {
 		TableLoginRecord
 		TableThirdPartyVerification
 	}{
-		TableAccount:                mysql.NewMySQLAccount(conn),
-		TableAccountPermission:      mysql.NewMySQLAccountPermission(conn),
-		TableLoginRecord:            mysql.NewMySQLLoginRecord(conn),
-		TablePermission:             mysql.NewMySQLPermission(conn),
-		TableThirdPartyVerification: mysql.NewMySQLThirdPartyVerification(conn),
+		TableAccount:                mysql.NewAccount(conn),
+		TableAccountPermission:      mysql.NewAccountPermission(conn),
+		TableLoginRecord:            mysql.NewLoginRecord(conn),
+		TablePermission:             mysql.NewPermission(conn),
+		TableThirdPartyVerification: mysql.NewThirdPartyVerification(conn),
 	}
 }

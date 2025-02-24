@@ -10,7 +10,7 @@ type MySQLAccountPermission struct {
 	conn db.DBConn
 }
 
-func NewMySQLAccountPermission(conn db.DBConn) *MySQLAccountPermission {
+func NewAccountPermission(conn db.DBConn) *MySQLAccountPermission {
 	return &MySQLAccountPermission{
 		conn: conn,
 	}
