@@ -5,8 +5,8 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./localhost/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./localhost/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./test/localhost/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./test/localhost/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - ddd-sample-system
   # API 服務
@@ -40,5 +40,5 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 1234
     volumes:
-      - "./localhost/mysql/auth_schema.sql:/docker-entrypoint-initdb.d/1.sql"
-      - "./localhost/mysql/auth_data.sql:/docker-entrypoint-initdb.d/2.sql"
+      - "./test/localhost/mysql/auth_schema.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./test/localhost/mysql/auth_data.sql:/docker-entrypoint-initdb.d/2.sql"
