@@ -1,14 +1,5 @@
 package httpserver
 
-import (
-	"errors"
-)
-
-var (
-	// next api handler
-	errorNext = errors.New("")
-)
-
 type CatchFunc func(*httpServer)
 
 // 註冊error handler，將回傳最後一個ErrorResult

@@ -47,52 +47,56 @@ func (s *httpServer) Catch(fns ...CatchFunc) {
 }
 
 // 正常回應，http response 200
-func (s *httpServer) onResult(ctx *gin.Context, result RestfulResult) {
-	ResponseOK(ctx, result)
+func (s *httpServer) onResult(ctx *Context, result RestfulResult) {
+	ResponseOK(ctx.Context, result)
 }
 
 // 錯誤處理，http response 400
-func (s *httpServer) onError(ctx *gin.Context, err error) {
+func (s *httpServer) onError(ctx *Context, err error) {
 	var errResult ErrorResult
 	var fnErr error
 
 	for _, fn := range s.errorHandlers {
+		// 帶入新的context
+		ctx = buildContext(ctx.Context)
+
 		errResult, fnErr = fn(ctx, err)
-		if isNext(fnErr) {
-			continue
+		if fnErr != nil {
+			responseUnexpectedError(ctx.Context) // error handler發生error // TODO: log紀錄錯誤
+			return
 		}
 
-		// error handler發生error // TODO: log紀錄錯誤
-		if fnErr != nil {
-			responseUnexpectedError(ctx)
-			return
+		if ctx.isNexted() {
+			continue
 		}
 
 		break
 	}
 
-	ResponseFailure(ctx, errResult)
+	ResponseFailure(ctx.Context, errResult)
 }
 
 // 非預期錯誤處理，http response 400
-func (s *httpServer) onPanic(ctx *gin.Context, err error, trace string) {
+func (s *httpServer) onPanic(ctx *Context, err error, trace string) {
 	var errResult ErrorResult
 	var fnErr error
 
 	for _, fn := range s.panicHandlers {
+		// 帶入新的context
+		ctx = buildContext(ctx.Context)
+
 		errResult, fnErr = fn(ctx, err, trace)
-		if isNext(fnErr) {
-			continue
+		if fnErr != nil {
+			responseUnexpectedError(ctx.Context) // panic handler發生error // TODO: log紀錄錯誤
+			return
 		}
 
-		// panic handler發生error // TODO: log紀錄錯誤
-		if fnErr != nil {
-			responseUnexpectedError(ctx)
-			return
+		if ctx.isNexted() {
+			continue
 		}
 
 		break
 	}
 
-	ResponseFailure(ctx, errResult)
+	ResponseFailure(ctx.Context, errResult)
 }

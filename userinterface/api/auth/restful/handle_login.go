@@ -7,8 +7,6 @@ import (
 	"ddd-sample/userinterface/api/auth/model"
 	"ddd-sample/userinterface/api/common/cookie"
 	"ddd-sample/userinterface/api/common/validation"
-
-	"github.com/gin-gonic/gin"
 )
 
 // @summary      登入
@@ -19,7 +17,7 @@ import (
 // @param request body model.PostLoginRequest true "參數"
 // @router       /login [post]
 func HandleLogin(loginCommand auth.LoginCommand) httpserver.HandlerFunc {
-	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
+	return func(ctx *httpserver.Context) (httpserver.RestfulResult, error) {
 		// 取參數
 		requestData, err := validation.Validate[model.PostLoginRequest](ctx)
 		if err != nil {

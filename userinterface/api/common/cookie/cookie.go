@@ -1,6 +1,6 @@
 package cookie
 
-import "github.com/gin-gonic/gin"
+import "ddd-sample/pkg/httpserver"
 
 var (
 	// JWT token
@@ -35,7 +35,7 @@ func newCookie(name string, fns ...CookieOptionFunc) Cookie {
 	return c
 }
 
-func (c Cookie) Get(ctx *gin.Context) string {
+func (c Cookie) Get(ctx *httpserver.Context) string {
 	value, err := ctx.Cookie(c.name)
 	if err != nil {
 		return c.defaultValue
@@ -44,7 +44,7 @@ func (c Cookie) Get(ctx *gin.Context) string {
 	return value
 }
 
-func (c Cookie) Set(ctx *gin.Context, value string, fns ...CookieOptionFunc) {
+func (c Cookie) Set(ctx *httpserver.Context, value string, fns ...CookieOptionFunc) {
 	copyCookie := c
 
 	for _, fn := range fns {

@@ -6,12 +6,10 @@ import (
 	"ddd-sample/pkg/httpserver"
 	"ddd-sample/pkg/log"
 	"ddd-sample/userinterface/api/common/cookie"
-
-	"github.com/gin-gonic/gin"
 )
 
 func HandlePanic(getLangQuery lang.GetLangQuery) httpserver.PanicHandlerFunc {
-	return func(ctx *gin.Context, errIn error, traceback string) (result httpserver.ErrorResult, errOut error) {
+	return func(ctx *httpserver.Context, errIn error, traceback string) (result httpserver.ErrorResult, errOut error) {
 		locale := cookie.Locale.Get(ctx)
 
 		result.ErrorCode = errorcode.ErrUnexpected.Code()
@@ -21,7 +19,7 @@ func HandlePanic(getLangQuery lang.GetLangQuery) httpserver.PanicHandlerFunc {
 	}
 }
 
-func getLang(ctx *gin.Context, getLangQuery lang.GetLangQuery, key, locale string) string {
+func getLang(ctx *httpserver.Context, getLangQuery lang.GetLangQuery, key, locale string) string {
 	value, _ := getLangQuery.Execute(ctx, lang.GetLangQueryInput{
 		Key:    key,
 		Locale: locale,

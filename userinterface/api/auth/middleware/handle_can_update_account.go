@@ -4,12 +4,10 @@ import (
 	"ddd-sample/pkg/errorcode"
 	"ddd-sample/pkg/httpserver"
 	"ddd-sample/userinterface/api/common/context"
-
-	"github.com/gin-gonic/gin"
 )
 
 func HandleCanUpdateAccount() httpserver.HandlerFunc {
-	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
+	return func(ctx *httpserver.Context) (httpserver.RestfulResult, error) {
 		// 登入帳號資料
 		userUID, err := context.UserUID.Get(ctx)
 		if err != nil {
@@ -24,6 +22,6 @@ func HandleCanUpdateAccount() httpserver.HandlerFunc {
 			return nil, errorcode.ErrPermissionDenied
 		}
 
-		return httpserver.Next()
+		return ctx.Next()
 	}
 }

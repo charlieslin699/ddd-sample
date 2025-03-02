@@ -2,9 +2,8 @@ package context
 
 import (
 	"ddd-sample/pkg/errorcode"
+	"ddd-sample/pkg/httpserver"
 	"reflect"
-
-	"github.com/gin-gonic/gin"
 )
 
 var (
@@ -29,7 +28,7 @@ func Context[T any](fns ...ContextKeyOptionfunc) ContextKey[T] {
 	return ck
 }
 
-func (ck ContextKey[T]) Get(ctx *gin.Context) (data T, err error) {
+func (ck ContextKey[T]) Get(ctx *httpserver.Context) (data T, err error) {
 	key := string(ck)
 	if value, isExist := ctx.Get(key); isExist {
 		return value.(T), errorcode.ErrContextGetFailed
@@ -38,7 +37,7 @@ func (ck ContextKey[T]) Get(ctx *gin.Context) (data T, err error) {
 	return
 }
 
-func (ck ContextKey[T]) Set(ctx *gin.Context, data T) {
+func (ck ContextKey[T]) Set(ctx *httpserver.Context, data T) {
 	key := string(ck)
 	ctx.Set(key, data)
 }

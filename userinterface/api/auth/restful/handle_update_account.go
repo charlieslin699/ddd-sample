@@ -5,12 +5,10 @@ import (
 	"ddd-sample/pkg/httpserver"
 	"ddd-sample/userinterface/api/auth/model"
 	"ddd-sample/userinterface/api/common/validation"
-
-	"github.com/gin-gonic/gin"
 )
 
 func HandleUpdateAccount(updateAccountCommand auth.UpdateAccountCommand) httpserver.HandlerFunc {
-	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
+	return func(ctx *httpserver.Context) (httpserver.RestfulResult, error) {
 		// 參數驗證
 		requestURI, err := validation.ValidateURI[model.PutAccountRequestURI](ctx)
 		if err != nil {

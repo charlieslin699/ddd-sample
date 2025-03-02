@@ -5,12 +5,10 @@ import (
 	"ddd-sample/pkg/httpserver"
 	"ddd-sample/userinterface/api/common/context"
 	"ddd-sample/userinterface/api/common/cookie"
-
-	"github.com/gin-gonic/gin"
 )
 
 func HandleAuthorization(checkTokenQuery auth.CheckTokenQuery) httpserver.HandlerFunc {
-	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
+	return func(ctx *httpserver.Context) (httpserver.RestfulResult, error) {
 		authToken := cookie.AuthToken.Get(ctx)
 		output, err := checkTokenQuery.Execute(ctx, auth.CheckTokenQueryInput{
 			AuthToken: authToken,
@@ -23,6 +21,6 @@ func HandleAuthorization(checkTokenQuery auth.CheckTokenQuery) httpserver.Handle
 		context.UserUID.Set(ctx, output.UID)
 		context.Username.Set(ctx, output.Username)
 
-		return httpserver.Next()
+		return ctx.Next()
 	}
 }
