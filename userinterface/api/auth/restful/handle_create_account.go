@@ -6,12 +6,10 @@ import (
 	"ddd-sample/userinterface/api/common/validation"
 
 	"ddd-sample/application/command/auth"
-
-	"github.com/gin-gonic/gin"
 )
 
 func HandleCreateAccount(createAccountCommand auth.CreateAccountCommand) httpserver.HandlerFunc {
-	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
+	return func(ctx *httpserver.Context) (httpserver.RestfulResult, error) {
 		// 參數驗證
 		requestData, err := validation.Validate[model.PostAccountRequest](ctx)
 		if err != nil {

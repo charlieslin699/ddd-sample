@@ -8,12 +8,11 @@ import (
 	"ddd-sample/userinterface/api/common/cookie"
 	"runtime/debug"
 
-	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
 func HandleError(getLangQuery lang.GetLangQuery) httpserver.ErrorHandlerFunc {
-	return func(ctx *gin.Context, err error) (result httpserver.ErrorResult, err1 error) {
+	return func(ctx *httpserver.Context, err error) (result httpserver.ErrorResult, err1 error) {
 		locale := cookie.Locale.Get(ctx)
 
 		switch v := err.(type) {
@@ -46,7 +45,7 @@ func handleErrorCode(errcode errorcode.ErrorCode) {
 	}
 }
 
-func getLang(ctx *gin.Context, getLangQuery lang.GetLangQuery, key, locale string) string {
+func getLang(ctx *httpserver.Context, getLangQuery lang.GetLangQuery, key, locale string) string {
 	value, _ := getLangQuery.Execute(ctx, lang.GetLangQueryInput{
 		Key:    key,
 		Locale: locale,

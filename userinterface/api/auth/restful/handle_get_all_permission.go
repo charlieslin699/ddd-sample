@@ -6,12 +6,10 @@ import (
 	"ddd-sample/pkg/httpserver"
 	"ddd-sample/userinterface/api/auth/model"
 	"ddd-sample/userinterface/api/common/cookie"
-
-	"github.com/gin-gonic/gin"
 )
 
 func HandleGetAllPermission(getAllPermissionQuery auth.GetAllPermissionQuery, getLangQuery lang.GetLangQuery) httpserver.HandlerFunc {
-	return func(ctx *gin.Context) (httpserver.RestfulResult, error) {
+	return func(ctx *httpserver.Context) (httpserver.RestfulResult, error) {
 		// 取帳號語系
 		locale := cookie.Locale.Get(ctx)
 

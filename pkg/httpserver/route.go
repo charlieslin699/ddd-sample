@@ -1,14 +1,13 @@
 package httpserver
 
 import (
-	"errors"
 	"fmt"
 	"runtime/debug"
 
 	"github.com/gin-gonic/gin"
 )
 
-type RouteFunc func(s *httpServer, r *gin.RouterGroup)
+type RouteFunc func(*httpServer, *gin.RouterGroup)
 
 // API路徑分群
 func Group(path string, fns ...RouteFunc) RouteFunc {
@@ -24,7 +23,7 @@ func Group(path string, fns ...RouteFunc) RouteFunc {
 func Use(fns ...HandlerFunc) RouteFunc {
 	return func(s *httpServer, r *gin.RouterGroup) {
 		for _, fn := range fns {
-			r.Use(handler(s, fn))
+			r.Use(do(s, fn))
 		}
 	}
 }
@@ -34,7 +33,7 @@ func GET(path string, fns ...HandlerFunc) RouteFunc {
 	return func(s *httpServer, r *gin.RouterGroup) {
 		tempFns := make([]gin.HandlerFunc, len(fns))
 		for i, fn := range fns {
-			tempFns[i] = handler(s, fn)
+			tempFns[i] = do(s, fn)
 		}
 
 		r.GET(path, tempFns...)
@@ -46,7 +45,7 @@ func POST(path string, fns ...HandlerFunc) RouteFunc {
 	return func(s *httpServer, r *gin.RouterGroup) {
 		tempFns := make([]gin.HandlerFunc, len(fns))
 		for i, fn := range fns {
-			tempFns[i] = handler(s, fn)
+			tempFns[i] = do(s, fn)
 		}
 
 		r.POST(path, tempFns...)
@@ -58,7 +57,7 @@ func PUT(path string, fns ...HandlerFunc) RouteFunc {
 	return func(s *httpServer, r *gin.RouterGroup) {
 		tempFns := make([]gin.HandlerFunc, len(fns))
 		for i, fn := range fns {
-			tempFns[i] = handler(s, fn)
+			tempFns[i] = do(s, fn)
 		}
 
 		r.PUT(path, tempFns...)
@@ -70,7 +69,7 @@ func PATCH(path string, fns ...HandlerFunc) RouteFunc {
 	return func(s *httpServer, r *gin.RouterGroup) {
 		tempFns := make([]gin.HandlerFunc, len(fns))
 		for i, fn := range fns {
-			tempFns[i] = handler(s, fn)
+			tempFns[i] = do(s, fn)
 		}
 
 		r.PATCH(path, tempFns...)
@@ -82,7 +81,7 @@ func DELETE(path string, fns ...HandlerFunc) RouteFunc {
 	return func(s *httpServer, r *gin.RouterGroup) {
 		tempFns := make([]gin.HandlerFunc, len(fns))
 		for i, fn := range fns {
-			tempFns[i] = handler(s, fn)
+			tempFns[i] = do(s, fn)
 		}
 
 		r.DELETE(path, tempFns...)
@@ -90,8 +89,10 @@ func DELETE(path string, fns ...HandlerFunc) RouteFunc {
 }
 
 // pipeline流程處理
-func handler(s *httpServer, fn HandlerFunc) func(ctx *gin.Context) {
-	return func(ctx *gin.Context) {
+func do(s *httpServer, fn HandlerFunc) func(*gin.Context) {
+	return func(ginCtx *gin.Context) {
+		ctx := buildContext(ginCtx)
+
 		// panic處理
 		defer func() {
 			if p := recover(); p != nil {
@@ -99,36 +100,21 @@ func handler(s *httpServer, fn HandlerFunc) func(ctx *gin.Context) {
 				traceback := string(debug.Stack())
 
 				s.onPanic(ctx, fmt.Errorf("%v", p), traceback)
-				ctx.Abort()
 			}
 		}()
 
-		data, err := fn(ctx)
-
-		// 是否跳過
-		if isNext(err) {
+		data, err := fn(buildContext(ginCtx))
+		if err != nil {
+			s.onError(ctx, err)
 			return
 		}
 
-		// error處理
-		if err != nil {
-			s.onError(ctx, err)
-			ctx.Abort()
+		// 是否繼續pipeline
+		if ctx.isNexted() {
 			return
 		}
 
 		// 回傳結果
 		s.onResult(ctx, data)
-		ctx.Abort()
 	}
-}
-
-// 繼續 handler
-func Next() (RestfulResult, error) {
-	return nil, errorNext
-}
-
-// 是否繼續 handler
-func isNext(err error) bool {
-	return errors.Is(errorNext, err)
 }

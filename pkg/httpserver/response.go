@@ -18,6 +18,8 @@ type ResponseData struct {
 
 // 回傳 http 200
 func ResponseOK(ctx *gin.Context, result RestfulResult) {
+	defer ctx.Abort()
+
 	data := ResponseData{
 		Code: SuccessCode,
 		Data: result,
@@ -27,6 +29,8 @@ func ResponseOK(ctx *gin.Context, result RestfulResult) {
 
 // 回傳 http 400
 func ResponseFailure(ctx *gin.Context, result ErrorResult) {
+	defer ctx.Abort()
+
 	data := ResponseData{
 		Code: result.ErrorCode,
 		Data: result,
