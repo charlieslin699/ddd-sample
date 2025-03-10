@@ -3,8 +3,8 @@ package auth
 import (
 	"context"
 	"ddd-sample/application/command"
+	"ddd-sample/config/errorcode"
 	"ddd-sample/internal/auth/repository"
-	"ddd-sample/pkg/errorcode"
 	"ddd-sample/pkg/localtime"
 )
 

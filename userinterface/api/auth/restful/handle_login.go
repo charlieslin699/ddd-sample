@@ -2,7 +2,7 @@ package restful
 
 import (
 	"ddd-sample/application/command/auth"
-	"ddd-sample/pkg/errorcode"
+	"ddd-sample/config/errorcode"
 	"ddd-sample/pkg/httpserver"
 	"ddd-sample/userinterface/api/auth/model"
 	"ddd-sample/userinterface/api/common/cookie"

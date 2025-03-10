@@ -1,7 +1,7 @@
 package context
 
 import (
-	"ddd-sample/pkg/errorcode"
+	"ddd-sample/config/errorcode"
 	"ddd-sample/pkg/httpserver"
 	"reflect"
 )

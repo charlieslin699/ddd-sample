@@ -2,7 +2,7 @@ package panichandler
 
 import (
 	"ddd-sample/application/query/lang"
-	"ddd-sample/pkg/errorcode"
+	"ddd-sample/config/errorcode"
 	"ddd-sample/pkg/httpserver"
 	"ddd-sample/pkg/log"
 	"ddd-sample/userinterface/api/common/cookie"

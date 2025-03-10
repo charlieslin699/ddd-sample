@@ -2,7 +2,8 @@ package errorhandler
 
 import (
 	"ddd-sample/application/query/lang"
-	"ddd-sample/pkg/errorcode"
+	"ddd-sample/config/errorcode"
+	pkgerrcode "ddd-sample/pkg/errorcode"
 	"ddd-sample/pkg/httpserver"
 	"ddd-sample/pkg/log"
 	"ddd-sample/userinterface/api/common/cookie"
@@ -16,7 +17,7 @@ func HandleError(getLangQuery lang.GetLangQuery) httpserver.ErrorHandlerFunc {
 		locale := cookie.Locale.Get(ctx)
 
 		switch v := err.(type) {
-		case errorcode.ErrorCode:
+		case pkgerrcode.ErrorCode:
 			handleErrorCode(v)
 			result.ErrorCode = v.Code()
 			result.Message = getLang(ctx, getLangQuery, v.LangIndex(), locale)
@@ -35,7 +36,7 @@ func HandleError(getLangQuery lang.GetLangQuery) httpserver.ErrorHandlerFunc {
 	}
 }
 
-func handleErrorCode(errcode errorcode.ErrorCode) {
+func handleErrorCode(errcode pkgerrcode.ErrorCode) {
 	//nolint:gocritic // 錯誤代碼處理
 	switch errcode {
 	// 取不到context資料，可能是middleware沒有設定

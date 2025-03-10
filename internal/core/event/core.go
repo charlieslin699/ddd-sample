@@ -1,7 +1,8 @@
 package event
 
 import (
-	"ddd-sample/pkg/errorcode"
+	"ddd-sample/config/errorcode"
+	pkgerrcode "ddd-sample/pkg/errorcode"
 	"ddd-sample/pkg/uid"
 	"ddd-sample/pkg/util"
 )
@@ -33,7 +34,7 @@ func (e CoreEvent[T]) GetName() string {
 	return e.Name
 }
 
-func (e CoreEvent[T]) ParseToJSON() (string, errorcode.ErrorCode) {
+func (e CoreEvent[T]) ParseToJSON() (string, pkgerrcode.ErrorCode) {
 	s, err := util.JSONMarshal(e.Data)
 	if err != nil {
 		return "", errorcode.ErrJSONMarshal
