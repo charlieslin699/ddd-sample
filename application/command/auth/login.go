@@ -3,8 +3,9 @@ package auth
 import (
 	"context"
 	"ddd-sample/application/command"
+	"ddd-sample/config/env"
 	"ddd-sample/internal/auth/repository"
-	"ddd-sample/pkg/env"
+	pkgenv "ddd-sample/pkg/env"
 	"ddd-sample/pkg/localtime"
 )
 
@@ -13,7 +14,7 @@ type LoginCommand command.Command[LoginCommandInput, LoginCommandOutput]
 
 type loginCommand struct {
 	identityRepository repository.IdentityRepository
-	env                env.Env
+	env                pkgenv.Env
 	localtime          localtime.LocalTime
 }
 
@@ -28,7 +29,7 @@ type LoginCommandOutput struct {
 }
 
 // 工廠
-func NewLoginCommand(identityRepository repository.IdentityRepository, env env.Env, localtime localtime.LocalTime) LoginCommand {
+func NewLoginCommand(identityRepository repository.IdentityRepository, env pkgenv.Env, localtime localtime.LocalTime) LoginCommand {
 	return &loginCommand{
 		identityRepository: identityRepository,
 		env:                env,

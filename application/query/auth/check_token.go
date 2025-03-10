@@ -3,7 +3,8 @@ package auth
 import (
 	"context"
 	"ddd-sample/application/query"
-	"ddd-sample/pkg/env"
+	"ddd-sample/config/env"
+	pkgenv "ddd-sample/pkg/env"
 	"ddd-sample/pkg/errorcode"
 	"ddd-sample/pkg/localtime"
 	"ddd-sample/pkg/token"
@@ -12,7 +13,7 @@ import (
 type CheckTokenQuery query.Query[CheckTokenQueryInput, CheckTokenQueryOutput]
 
 type checkTokenQuery struct {
-	env       env.Env
+	env       pkgenv.Env
 	localTime localtime.LocalTime
 }
 
@@ -25,7 +26,7 @@ type CheckTokenQueryOutput struct {
 	Username string
 }
 
-func NewCheckTokenQuery(env env.Env, localTime localtime.LocalTime) CheckTokenQuery {
+func NewCheckTokenQuery(env pkgenv.Env, localTime localtime.LocalTime) CheckTokenQuery {
 	return &checkTokenQuery{
 		env:       env,
 		localTime: localTime,

@@ -25,7 +25,7 @@ func NewEnv() Env {
 
 // GetValue 使用EnvKey取字典檔
 func (_ env) GetValue(ek EnvKey) string { //nolint:stylecheck // 保持取資料流程一致
-	return ek.value()
+	return ek.Value()
 }
 
 // GetValueByKey 使用輸入的key取字典檔, 少用、維護性差

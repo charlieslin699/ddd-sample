@@ -3,9 +3,10 @@ package auth
 import (
 	"context"
 	"ddd-sample/application/query"
+	"ddd-sample/config/env"
 	infradbauth "ddd-sample/infra/db/auth"
 	"ddd-sample/internal/auth/enum"
-	"ddd-sample/pkg/env"
+	pkgenv "ddd-sample/pkg/env"
 	"ddd-sample/pkg/otp"
 )
 
@@ -13,7 +14,7 @@ type GetAccountQuery query.Query[GetAccountQueryInput, GetAccountQueryOutput]
 
 type getAccountQuery struct {
 	dbAuth infradbauth.DBAuth
-	env    env.Env
+	env    pkgenv.Env
 }
 
 type GetAccountQueryInput struct {
@@ -26,7 +27,7 @@ type GetAccountQueryOutput struct {
 	OTPURL   string
 }
 
-func NewGetAccountQuery(dbAuth infradbauth.DBAuth, env env.Env) GetAccountQuery {
+func NewGetAccountQuery(dbAuth infradbauth.DBAuth, env pkgenv.Env) GetAccountQuery {
 	return &getAccountQuery{
 		dbAuth: dbAuth,
 		env:    env,

@@ -4,6 +4,7 @@ import (
 	commandauth "ddd-sample/application/command/auth"
 	queryauth "ddd-sample/application/query/auth"
 	querylang "ddd-sample/application/query/lang"
+	configenv "ddd-sample/config/env"
 	"ddd-sample/infra/db"
 	dbauth "ddd-sample/infra/db/auth"
 	"ddd-sample/internal/auth/adapter"
@@ -27,7 +28,7 @@ func InitRouter(server httpserver.HTTPServer) {
 	i18n := pkgi18n.NewI18n()
 
 	// config
-	dbConfigPath := fmt.Sprintf(`%s/config/system/%s`, env.GetValue(pkgenv.ConfigPath), env.GetValue(pkgenv.ProjectEnv))
+	dbConfigPath := fmt.Sprintf(`%s/config/system/%s`, env.GetValue(configenv.ConfigPath), env.GetValue(configenv.ProjectEnv))
 	dbConfig, err := pkgsystem.GetDBConfig(dbConfigPath)
 	if err != nil {
 		panic(err)
