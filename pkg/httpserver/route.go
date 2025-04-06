@@ -103,7 +103,7 @@ func do(s *httpServer, fn HandlerFunc) func(*gin.Context) {
 			}
 		}()
 
-		data, err := fn(buildContext(ginCtx))
+		data, err := fn(ctx)
 		if err != nil {
 			s.onError(ctx, err)
 			return
